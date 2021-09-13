@@ -12,9 +12,9 @@ parser.add_argument('-g', dest='gpio', type=int, default=27,
                     help="GPIO pin (Default: 27)")
 args = parser.parse_args()
 
-logging.info("Listening for codes on GPIO " + str(args.gpio))
+print("Listening for codes on GPIO " + str(args.gpio))
 rfdevice = RFDevice(args.gpio)
 
 
 def get_rf_device():
-    return rfdevice;
+    return rfdevice
