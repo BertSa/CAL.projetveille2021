@@ -2,8 +2,7 @@
 # Original credit: https://github.com/milaq/rpi-rf
 # Copyright (c) 2021 Samuel Bertrand
 import argparse
-import signal
-import sys
+import logging
 import time
 
 from rpi_rf import RFDevice
