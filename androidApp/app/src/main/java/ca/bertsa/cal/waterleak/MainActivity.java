@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
                     String token = task.getResult();
 
                     Log.d(TAG, token);
-                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
                 });
         FirebaseMessaging.getInstance().subscribeToTopic("leak")
                 .addOnCompleteListener(task -> {
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                         msg = getString(R.string.msg_subscribe_failed);
                     }
                     Log.d(TAG, msg);
-                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                 });
     }
 }
