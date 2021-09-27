@@ -9,9 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WaterLeak">
-        <activity
-            android:name=".LeakAlert"
-            android:exported="true" />
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
@@ -32,7 +29,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".LeakAlert"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="alert"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <service
             android:name=".services.FBService"
             android:exported="false">

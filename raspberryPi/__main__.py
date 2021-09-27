@@ -1,6 +1,7 @@
 import json
 import time
 
+import fbService
 import rpi_rf_receive
 
 
@@ -15,6 +16,7 @@ def main():
             timestamp = rfdevice.rx_code_timestamp
             if rfdevice.rx_code == data['rf_code2']:
                 print("Signal received")
+                fbService.send_to_topic()
         time.sleep(0.01)
     # rfdevice.cleanup()
     # f.close
