@@ -1,5 +1,7 @@
 # Water Leak BackEnd
+
 This part of the project serve to send notification to the topic `leak` of your firebase app when there's a water leak.
+
 ## Installation
 
 ### Libraries
@@ -13,15 +15,26 @@ Install [rpi_rf](https://github.com/milaq/rpi-rf):
 ```
 pip install rpi-rf
 ```
+
 #### Firebase Admin (Python)
+
 Install [firebase-admin](https://github.com/firebase/firebase-admin-python):
+
 ```
 pip install firebase-admin
 ```
-You will need to generate a new private key in your firebase project for this you need to open Setting > Service Accounts then click Generate New Private Key. 
+
+You will need to generate a new private key in your firebase project for this you need to open Setting > Service Accounts then click Generate New Private Key.
 Now you will paste the file in the project.Then rename the file for `GOOGLE_APPLICATION_CREDENTIALS.json`
+
+### Config Files
+
+You will find a `config-sample.json` rename it for `config.json`. Then open the file and set the frequency code you want your app to check for.
+
 ### Raspberry Pi
+
 For this project I'm using a Raspberry Pi 4 MobelB+. As long as you use the same GPI0 you wont have any change to do.
+
 ```
                        RPI GPIO HEADER
                               _____________

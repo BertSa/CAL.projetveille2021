@@ -6,10 +6,10 @@ This part of the project sends a signal when a water leak is detected.
 
 ## Materials
 
-    -ATTiny85
-    -RF receiver
-    -Buzzer(not necessary)
-    -Battery
+- ATTiny85
+- RF receiver
+- Buzzer(optional)
+- Battery(5V)
 
 ## Installation
 

@@ -1,1 +1,3 @@
-# CAL.projetveille2021
+# Veille Technologique Projects
+
+In this project I have to learn new technologies.
