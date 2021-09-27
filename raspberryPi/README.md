@@ -9,9 +9,15 @@ If pip isn't already installed:`apt-get install python3-pip`
 Install [rpi_rf](https://github.com/milaq/rpi-rf):
 
 ```
-pip3 install rpi-rf
+pip install rpi-rf
 ```
-
+Install [Firebase](https://github.com/milaq/rpi-rf):
+```
+pip install firebase-admin
+```
+You will need to generate a new private key in your firebase project for this you need to open Setting > Service Accounts then click Generate New Private Key. Now that you have your new key you need to set it as an environement variable. For this you will need to enter this command:
+```
+```
 ```
                        RPI GPIO HEADER
                               _____________
