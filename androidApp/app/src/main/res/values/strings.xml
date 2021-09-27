@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WaterLeak</string>
+    <string name="default_notification_channel_id">0</string>
+    <string name="fcm_message">WaterLeak!!!</string>
+    <string name="msg_subscribed">Subscribed to topic</string>
+    <string name="msg_subscribe_failed">Subscription to topic failed</string>
+    <string name="alert">Alert!!!!</string>
+</resources>
