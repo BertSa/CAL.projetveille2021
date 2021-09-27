@@ -13,7 +13,7 @@ def main():
     while True:
         if rfdevice.rx_code_timestamp != timestamp:
             timestamp = rfdevice.rx_code_timestamp
-            if rfdevice.rx_code == data['rf_code2']:
+            if rfdevice.rx_code == data['rf_code']:
                 print("Signal received")
         time.sleep(0.01)
     # rfdevice.cleanup()
