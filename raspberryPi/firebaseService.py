@@ -23,9 +23,7 @@ class FirebaseService:
         })
         self.topic = self.data['firebase']['topic']
         self.ref_path_1 = self.data['firebase']['ref_path_1']
-        self.ref_path_2 = self.data['firebase']['ref_path_2']
-        self.ref = db.reference(self.ref_path_1)
-        self.is_leaking = self.getDataFromRef(self.ref_path_2)
+        self.ref = db.reference()
 
     def getDataFromRef(self, ref_path):
         return self.ref.child(ref_path).get()
@@ -50,9 +48,6 @@ class FirebaseService:
     def setDataToRef(self, ref_path, data):
         child = self.ref.child(ref_path)
         child.set(data)
-
-    def setIsLeaking(self, data: bool):
-        self.setDataToRef(self.ref_path_2, data)
 
     def setValve(self, data: bool):
         self.setDataToRef(self.ref_path_1, data)
