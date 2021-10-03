@@ -39,9 +39,13 @@ class FirebaseService:
                     body='The floor is getting wet!!!',
                     click_action='alert',
                     visibility='public',
-                    priority='high',
-                    sticky=True
-                )
+                    priority='max',
+                    sticky=True,
+                    channel_id="waterleak",
+                    color="#FF0000",
+                    tag="WATERLEAK"
+                ),
+                priority='high'
             ),
             topic=self.topic,
         )
