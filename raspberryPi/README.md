@@ -33,7 +33,7 @@ You will find a `config-sample.json` rename it for `config.json`. Then open the 
 
 ### Raspberry Pi
 
-For this project I'm using a Raspberry Pi 4 MobelB+. As long as you use the same GPI0 you wont have any change to do.
+For this project I'm using a Raspberry Pi 4 ModelB+. As long as you use the same GPI0 you won't have any change to do.
 
 ```
                        RPI GPIO HEADER

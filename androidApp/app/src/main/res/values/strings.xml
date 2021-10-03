@@ -5,4 +5,6 @@
     <string name="msg_subscribed">Subscribed to topic</string>
     <string name="msg_subscribe_failed">Subscription to topic failed</string>
     <string name="alert">Alert!!!!</string>
+    <string name="valve">Valve</string>
+    <string name="button">WaterLeak</string>
 </resources>

@@ -1,15 +1,25 @@
 package ca.bertsa.cal.waterleak;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +32,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.w(TAG, "Fetching FCM registration token failed", task.getException());
                         return;
                     }
-
                     String token = task.getResult();
-
                     Log.d(TAG, token);
-//                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
                 });
         FirebaseMessaging.getInstance().subscribeToTopic("leak")
                 .addOnCompleteListener(task -> {
@@ -35,7 +42,12 @@ public class MainActivity extends AppCompatActivity {
                         msg = getString(R.string.msg_subscribe_failed);
                     }
                     Log.d(TAG, msg);
-//                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                 });
+        findViewById(R.id.btnGoToLeakActivity).setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), LeakAlert.class);
+            startActivity(intent);
+        });
     }
+
+
 }
