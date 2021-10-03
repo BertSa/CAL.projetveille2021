@@ -18,4 +18,3 @@ class MyRf:
 
     def send_signal(self, code):
         self.rfdevice_send.tx_code(code, 1, 350, 24)
-        self.rfdevice_send.cleanup()

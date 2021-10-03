@@ -31,15 +31,12 @@ def main():
                 if receive_device.rx_code == data['rf_code']:
                     print("Signal received")
                     service.send_to_topic()
+                    time.sleep(0.5)
             time.sleep(0.01)
 
     t1 = threading.Thread(target=my_thread)
     t1.start()
     service.startListener(my_listener)
-
-    print("poui")
-
-    # rfdevice.cleanup()
 
 
 if __name__ == "__main__":
