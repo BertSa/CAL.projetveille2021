@@ -37,7 +37,10 @@ class FirebaseService:
                 notification=messaging.AndroidNotification(
                     title='WaterLeak!!!',
                     body='The floor is getting wet!!!',
-                    click_action='alert'
+                    click_action='alert',
+                    visibility='public',
+                    priority='high',
+                    sticky=True
                 )
             ),
             topic=self.topic,
