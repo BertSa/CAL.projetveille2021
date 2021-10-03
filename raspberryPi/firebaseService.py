@@ -1,5 +1,5 @@
+#!/usr/bin/python3
 import json
-from typing import Any
 
 import firebase_admin
 from firebase_admin import credentials
@@ -7,8 +7,13 @@ from firebase_admin import db
 from firebase_admin import messaging
 
 
+def my_listener(event):
+    print(event.event_type)  # can be 'put' or 'patch'
+    print(event.path)
+    print(event.data)
+
+
 class FirebaseService:
-    topic: Any = 'leak'
 
     def __init__(self):
         with open("config.json", "r") as f:
@@ -17,10 +22,12 @@ class FirebaseService:
         firebase_admin.initialize_app(cred, {
             'databaseURL': self.data['firebase']['url_database'],
         })
+        self.topic = self.data['firebase']['topic']
+        self.ref_path_1 = self.data['firebase']['ref_path_1']
         self.refs = []
 
-    def startListener(self, listener):
-        self.refs.append(db.reference('waterleak/valve').listen(listener))
+    def startListener(self, listener=my_listener):
+        self.refs.append(db.reference(self.ref_path_1).listen(listener))
 
     def send_to_topic(self):
         message = messaging.Message(
@@ -35,15 +42,3 @@ class FirebaseService:
         )
         response = messaging.send(message)
         print('Successfully sent message:', response)
-
-
-def my_listener(event):
-    print(event.event_type)  # can be 'put' or 'patch'
-    print(event.path)
-    print(event.data)
-
-
-if __name__ == "__main__":
-    service = FirebaseService()
-    # service.send_to_topic()
-    service.startListener(my_listener)

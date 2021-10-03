@@ -1,10 +1,8 @@
-#!/usr/bin/env python3
-# Original credit: https://github.com/milaq/rpi-rf
-# Copyright (c) 2016 Suat Özgür, Micha LaQua
+#!/usr/bin/python3
 from rpi_rf import RFDevice
 
 
-class MyRf:
+class MyRpiRf:
     def __init__(self):
         self.rfdevice_send = RFDevice(17)
         self.rfdevice_send.enable_tx()

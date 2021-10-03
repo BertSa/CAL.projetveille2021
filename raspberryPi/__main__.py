@@ -4,12 +4,12 @@ import time
 import threading
 
 from firebaseService import FirebaseService
-from rpi_rf_send import MyRf
+from my_rpi_rf import MyRpiRf
 
 
 def main():
     service = FirebaseService()
-    myrf = MyRf()
+    myrf = MyRpiRf()
     receive_device = myrf.get_rfdevice_receive()
     with open("config.json", "r") as f:
         data = json.load(f)
