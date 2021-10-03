@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.bertsa.cal.waterleak">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WaterLeak">
-
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -34,6 +34,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="alert" />
+                <action android:name="android.app.action.INTERRUPTION_FILTER_CHANGED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
