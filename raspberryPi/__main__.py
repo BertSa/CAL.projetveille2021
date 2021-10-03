@@ -26,17 +26,20 @@ def main():
     def my_thread():
         timestamp = None
         while True:
-            if receive_device.rx_code_timestamp != timestamp:
-                timestamp = receive_device.rx_code_timestamp
-                if receive_device.rx_code == data['rf_code']:
-                    print("Signal received")
-                    service.send_to_topic()
-                    time.sleep(0.5)
+            if not service.is_leaking:
+                if receive_device.rx_code_timestamp != timestamp:
+                    timestamp = receive_device.rx_code_timestamp
+                    if receive_device.rx_code == data['rf_code']:
+                        print("Signal received")
+                        service.send_to_topic()
+                        service.setIsLeaking(True)
+                        service.setValve(False)
+                        time.sleep(0.5)
             time.sleep(0.01)
 
     t1 = threading.Thread(target=my_thread)
     t1.start()
-    service.startListener(my_listener)
+    service.startListenerValve(my_listener)
 
 
 if __name__ == "__main__":

@@ -14,7 +14,6 @@ def my_listener(event):
 
 
 class FirebaseService:
-
     def __init__(self):
         with open("config.json", "r") as f:
             self.data = json.load(f)
@@ -24,10 +23,15 @@ class FirebaseService:
         })
         self.topic = self.data['firebase']['topic']
         self.ref_path_1 = self.data['firebase']['ref_path_1']
-        self.refs = []
+        self.ref_path_2 = self.data['firebase']['ref_path_2']
+        self.ref = db.reference(self.ref_path_1)
+        self.is_leaking = self.getDataFromRef(self.ref_path_2)
 
-    def startListener(self, listener=my_listener):
-        self.refs.append(db.reference(self.ref_path_1).listen(listener))
+    def getDataFromRef(self, ref_path):
+        return self.ref.child(ref_path).get()
+
+    def startListenerValve(self, listener=my_listener):
+        self.ref.child(self.ref_path_1).listen(listener)
 
     def send_to_topic(self):
         message = messaging.Message(
@@ -42,3 +46,13 @@ class FirebaseService:
         )
         response = messaging.send(message)
         print('Successfully sent message:', response)
+
+    def setDataToRef(self, ref_path, data):
+        child = self.ref.child(ref_path)
+        child.set(data)
+
+    def setIsLeaking(self, data: bool):
+        self.setDataToRef(self.ref_path_2, data)
+
+    def setValve(self, data: bool):
+        self.setDataToRef(self.ref_path_1, data)
