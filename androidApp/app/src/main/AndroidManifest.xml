@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent=""
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -29,13 +30,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LeakAlert"
+        <activity
+            android:name=".LeakAlert"
             android:exported="true">
             <intent-filter>
-                <action android:name="alert"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="alert" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".services.FBService"
             android:exported="false">
