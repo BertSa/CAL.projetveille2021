@@ -17,4 +17,4 @@ def sendSignal(code):
 
 
 if __name__ == "__main__":
-    sendSignal(6125504)
+    sendSignal(555555)
