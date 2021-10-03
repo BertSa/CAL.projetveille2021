@@ -2,8 +2,6 @@
 # Original credit: https://github.com/milaq/rpi-rf
 # Copyright (c) 2016 Suat Özgür, Micha LaQua
 import argparse
-import logging
-import time
 
 from rpi_rf import RFDevice
 

@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
 # Original credit: https://github.com/milaq/rpi-rf
 # Copyright (c) 2016 Suat Özgür, Micha LaQua
-import argparse
-import logging
-
 from rpi_rf import RFDevice
 
-rfdevice = RFDevice(17)
-rfdevice.enable_tx()
-rfdevice.tx_repeat = 10
 
+class MyRf:
+    def __init__(self):
+        self.rfdevice_send = RFDevice(17)
+        self.rfdevice_send.enable_tx()
+        self.rfdevice_send.tx_repeat = 10
 
-def sendSignal(code):
-    rfdevice.tx_code(code, 1, 350, 24)
-    rfdevice.cleanup()
+        self.rfdevice_receive = RFDevice(27)
+        self.rfdevice_receive.enable_rx()
 
+    def get_rfdevice_receive(self):
+        return self.rfdevice_receive
 
-if __name__ == "__main__":
-    sendSignal(555555)
+    def send_signal(self, code):
+        self.rfdevice_send.tx_code(code, 1, 350, 24)
+        self.rfdevice_send.cleanup()
