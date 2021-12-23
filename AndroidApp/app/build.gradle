@@ -1,9 +1,9 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
-
 android {
-    compileSdk 30
+    compileSdk 31
 
     defaultConfig {
         applicationId "ca.bertsa.domotique"
@@ -28,7 +28,9 @@ android {
 }
 
 dependencies {
-
+    implementation platform('com.google.firebase:firebase-bom:29.0.3')
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
