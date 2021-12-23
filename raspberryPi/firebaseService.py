@@ -22,7 +22,7 @@ class FirebaseService:
             'databaseURL': self.data['firebase']['url_database'],
         })
         self.topic = self.data['firebase']['topic']
-        self.ref_path_1 = self.data['firebase']['ref_path_1']
+        self.ref_path_1 = self.data['firebase']['url_database']
         self.ref = db.reference()
 
     def getDataFromRef(self, ref_path):
@@ -34,18 +34,10 @@ class FirebaseService:
     def send_to_topic(self):
         message = messaging.Message(
             android=messaging.AndroidConfig(
-                notification=messaging.AndroidNotification(
-                    title='WaterLeak!!!',
-                    body='The floor is getting wet!!!',
-                    click_action='alert',
-                    visibility='public',
-                    priority='max',
-                    sticky=True,
-                    channel_id="waterleak",
-                    color="#FF0000",
-                    tag="WATERLEAK"
-                ),
-                priority='high'
+                data={
+                    'score': '850',
+                    'time': '2:45',
+                },
             ),
             topic=self.topic,
         )
@@ -58,3 +50,8 @@ class FirebaseService:
 
     def setValve(self, data: bool):
         self.setDataToRef(self.ref_path_1, data)
+
+
+if __name__ == '__main__':
+    firebase = FirebaseService()
+    firebase.send_to_topic()
