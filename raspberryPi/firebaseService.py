@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-import json
 
 import firebase_admin
 from firebase_admin import credentials, db, messaging
+
+import config
 
 
 def my_listener(event):
@@ -21,14 +22,12 @@ class FirebaseData(dict):
 
 class FirebaseService:
     def __init__(self):
-        with open("config.json", "r") as f:
-            self.data = json.load(f)
         cred = credentials.Certificate("GOOGLE_APPLICATION_CREDENTIALS.json")
         firebase_admin.initialize_app(cred, {
-            'databaseURL': self.data['firebase']['url_database'],
+            'databaseURL': config.firebase["url_database"],
         })
-        self.topic = self.data['firebase']['topic']
-        self.ref_path_1 = self.data['firebase']['url_database']
+        self.topic = config.firebase['topic']
+        self.ref_path_1 = config.firebase['url_database']
         self.ref = db.reference()
 
     def getDataFromRef(self, ref_path):
