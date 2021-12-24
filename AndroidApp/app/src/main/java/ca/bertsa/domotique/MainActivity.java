@@ -40,14 +40,15 @@ public class MainActivity extends AppCompatActivity {
                     String msg = getString(R.string.msg_token_fmt, token);
                     Log.d(TAG, msg);
                 });
+        String topic = "waterleak";
         FirebaseMessaging.getInstance()
-                .subscribeToTopic("leak")
+                .subscribeToTopic(topic)
                 .addOnCompleteListener(task -> {
                     String msg;
                     if (task.isSuccessful())
-                        msg = getString(R.string.msg_subscribed);
+                        msg = getString(R.string.msg_subscribed, topic);
                     else
-                        msg = getString(R.string.msg_subscribe_failed);
+                        msg = getString(R.string.msg_subscribe_failed, topic);
 
                     Log.d(TAG, msg);
                 });

@@ -3,7 +3,7 @@
 import firebase_admin
 from firebase_admin import credentials, db, messaging
 
-import config
+from conf import config
 
 
 def my_listener(event):
@@ -22,11 +22,11 @@ class FirebaseData(dict):
 
 class FirebaseService:
     def __init__(self):
-        cred = credentials.Certificate("GOOGLE_APPLICATION_CREDENTIALS.json")
+        cred = credentials.Certificate(config.firebase['credentials'])
         firebase_admin.initialize_app(cred, {
             'databaseURL': config.firebase["url_database"],
         })
-        self.topic = config.firebase['topic']
+        self.topic = config.firebase['topics']['water_leak']
         self.ref_path_1 = config.firebase['url_database']
         self.ref = db.reference()
 
@@ -56,4 +56,7 @@ class FirebaseService:
 
 if __name__ == '__main__':
     firebase = FirebaseService()
-    firebase.send_to_topic(FirebaseData('waterleak', 'Oops!', 'Water leak detected!'))
+    firebase.send_to_topic(FirebaseData(
+        channel_id=config.firebase['channel_ids']['water_leak'],
+        title='Oops!',
+        text='Water leak detected!'))
