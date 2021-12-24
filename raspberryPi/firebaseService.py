@@ -11,6 +11,14 @@ def my_listener(event):
     print(event.data)
 
 
+class FirebaseData(dict):
+    def __init__(self, channel_id, title, text):
+        super().__init__()
+        self['channelId'] = channel_id
+        self['title'] = title
+        self['text'] = text
+
+
 class FirebaseService:
     def __init__(self):
         with open("config.json", "r") as f:
@@ -29,14 +37,10 @@ class FirebaseService:
     def startListenerValve(self, listener=my_listener):
         self.ref.child(self.ref_path_1).listen(listener)
 
-    def send_to_topic(self):
+    def send_to_topic(self, data: dict):
         message = messaging.Message(
             android=messaging.AndroidConfig(
-                data={
-                    'channelId': 'waterleak',
-                    'title': 'Oops!',
-                    'text': 'Water leak detected!'
-                },
+                data=data,
             ),
             topic=self.topic,
         )
@@ -53,4 +57,4 @@ class FirebaseService:
 
 if __name__ == '__main__':
     firebase = FirebaseService()
-    firebase.send_to_topic()
+    firebase.send_to_topic(FirebaseData('waterleak', 'Oops!', 'Water leak detected!'))
