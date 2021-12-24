@@ -12,7 +12,7 @@ def my_listener(event):
     print(event.data)
 
 
-class FirebaseData(dict):
+class FirebaseMessagingData(dict):
     def __init__(self, channel_id, title, text):
         super().__init__()
         self['channelId'] = channel_id
@@ -56,7 +56,7 @@ class FirebaseService:
 
 if __name__ == '__main__':
     firebase = FirebaseService()
-    firebase.send_to_topic(FirebaseData(
+    firebase.send_to_topic(FirebaseMessagingData(
         channel_id=config.firebase['channel_ids']['water_leak'],
         title='Oops!',
         text='Water leak detected!'))

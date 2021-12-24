@@ -3,13 +3,13 @@ import threading
 import time
 
 from conf import config
-from firebaseService import FirebaseService, FirebaseData
-from my_rpi_rf import MyRpiRf
+from firebaseService import FirebaseService, FirebaseMessagingData
+from custom_rpi_rf import CustomRpiRf
 
 
 def main():
     service = FirebaseService()
-    myrf = MyRpiRf()
+    myrf = CustomRpiRf()
     receive_device = myrf.get_rfdevice_receive()
 
     def my_listener(event):
@@ -29,7 +29,7 @@ def main():
                 timestamp = receive_device.rx_code_timestamp
                 if receive_device.rx_code == config.rf_codes['water_leak']['valve_off']:
                     print("Signal received")
-                    service.send_to_topic(FirebaseData(
+                    service.send_to_topic(FirebaseMessagingData(
                         channel_id=config.firebase['channel_ids']["water_leak"],
                         title='Oops!',
                         text='Water leak detected!'))

@@ -2,7 +2,7 @@
 from rpi_rf import RFDevice
 
 
-class MyRpiRf:
+class CustomRpiRf:
     def __init__(self):
         self.rfdevice_send = RFDevice(17)
         self.rfdevice_send.enable_tx()
