@@ -2,9 +2,7 @@
 import json
 
 import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
-from firebase_admin import messaging
+from firebase_admin import credentials, db, messaging
 
 
 def my_listener(event):
@@ -35,8 +33,9 @@ class FirebaseService:
         message = messaging.Message(
             android=messaging.AndroidConfig(
                 data={
-                    'score': '850',
-                    'time': '2:45',
+                    'channelId': 'waterleak',
+                    'title': 'Oops!',
+                    'text': 'Water leak detected!'
                 },
             ),
             topic=self.topic,
