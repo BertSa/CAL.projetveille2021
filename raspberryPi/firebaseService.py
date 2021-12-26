@@ -26,7 +26,8 @@ class FirebaseService:
         firebase_admin.initialize_app(cred, {
             'databaseURL': config.firebase["url_database"],
         })
-        self.topic = config.firebase['topics']['water_leak']
+        # self.topic = config.firebase['topics']['water_leak']
+        self.topic = config.firebase['topics']['laundry']
         self.ref_path_1 = config.firebase['url_database']
         self.ref = db.reference()
 
@@ -57,6 +58,7 @@ class FirebaseService:
 if __name__ == '__main__':
     firebase = FirebaseService()
     firebase.send_to_topic(FirebaseMessagingData(
-        channel_id=config.firebase['channel_ids']['water_leak'],
+        channel_id=config.firebase['channel_ids']['laundry'],
+        # channel_id=config.firebase['channel_ids']['water_leak'],
         title='Oops!',
         text='Water leak detected!'))
