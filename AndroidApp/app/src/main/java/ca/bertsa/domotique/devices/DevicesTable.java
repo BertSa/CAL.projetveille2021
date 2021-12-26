@@ -10,10 +10,12 @@ public class DevicesTable extends TableLayout {
 
     public DevicesTable(Context context) {
         super(context);
+        addRow();
     }
 
     public DevicesTable(Context context, AttributeSet attrs) {
         super(context, attrs);
+        addRow();
     }
 
     public void addItem(DeviceButton deviceButton) {
@@ -22,6 +24,9 @@ public class DevicesTable extends TableLayout {
             if (!lastRow.addItem(deviceButton)) {
                 DevicesTableRow tableRow = addRow();
                 tableRow.addItem(deviceButton);
+            }
+            if (lastRow.isFull()){
+                addRow();
             }
         } else {
             DevicesTableRow tableRow = addRow();

@@ -17,7 +17,9 @@ public class DevicesTableRow extends TableRow {
         setOrientation(TableRow.HORIZONTAL);
         setShowDividers(TableRow.SHOW_DIVIDER_MIDDLE);
         addView(new DeviceButton(context));
-        addView(new DeviceButton(context));
+        DeviceButton button = new DeviceButton(context);
+        button.setVisibility(INVISIBLE);
+        addView(button);
     }
 
     public DevicesTableRow(Context context, AttributeSet attrs) {
@@ -29,7 +31,7 @@ public class DevicesTableRow extends TableRow {
             final DeviceButton childAt = (DeviceButton) getChildAt(i);
             if (!childAt.isEnabled()) {
                 addView(item, i);
-                removeViewAt(i + 1);
+                removeViewAt(getChildCount() - 1);
                 return true;
             }
         }
@@ -37,4 +39,10 @@ public class DevicesTableRow extends TableRow {
     }
 
 
+    public boolean isFull() {
+        for (int i = 0; i < getChildCount(); i++)
+            if (!getChildAt(i).isEnabled())
+                return false;
+        return true;
+    }
 }
