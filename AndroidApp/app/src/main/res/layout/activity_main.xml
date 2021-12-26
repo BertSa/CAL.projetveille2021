@@ -18,13 +18,15 @@
         app:layout_constraintVertical_bias="0.074" />
 
     <TableLayout
-        android:layout_width="410dp"
-        android:layout_height="616dp"
+        android:id="@+id/table"
+        android:layout_width="409dp"
+        android:layout_height="520dp"
         android:layout_marginTop="43dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.157">
 
         <TableRow
             android:id="@+id/row1"

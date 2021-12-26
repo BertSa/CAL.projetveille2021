@@ -8,9 +8,11 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -22,11 +24,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         DeviceButton button = new DeviceButton(this, "Valve");
+        DeviceButton button2 = new DeviceButton(this, "Valve");
+
+        TableRow tableRow = new TableRow(this);
+        tableRow.setPadding(80,0,80,0);
+        tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
+        tableRow.setDividerDrawable(AppCompatResources.getDrawable(this, R.drawable.empty_tall_divider));
+        tableRow.setOrientation(TableRow.HORIZONTAL);
+        tableRow.setShowDividers(TableRow.SHOW_DIVIDER_MIDDLE);
+        tableRow.addView(button);
+        tableRow.addView(button2);
+        ((TableLayout) findViewById(R.id.table)).addView(tableRow);
 
 
-        ((TableRow) findViewById(R.id.row2)).addView(button);
+//        ((TableRow) findViewById(R.id.row2)).addView(button);
 
         setNotificationChannels();
         setFirebase();
