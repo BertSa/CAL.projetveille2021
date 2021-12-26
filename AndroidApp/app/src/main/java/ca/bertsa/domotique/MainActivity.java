@@ -26,21 +26,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         DeviceButton button = new DeviceButton(this, "Valve");
         DeviceButton button2 = new DeviceButton(this, "Valve");
+        DeviceButton button3 = new DeviceButton(this, "Salue");
         MyTable tableLayout = findViewById(R.id.table);
         tableLayout.addItem(button);
         tableLayout.addItem(button2);
-//        TableRow tableRow = new TableRow(this);
-//        tableRow.setPadding(80,0,80,0);
-//        tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
-//        tableRow.setDividerDrawable(AppCompatResources.getDrawable(this, R.drawable.empty_tall_divider));
-//        tableRow.setOrientation(TableRow.HORIZONTAL);
-//        tableRow.setShowDividers(TableRow.SHOW_DIVIDER_MIDDLE);
-//        tableRow.addView(button);
-//        tableRow.addView(button2);
-//        ((TableLayout) findViewById(R.id.table)).addView(tableRow);
-
-
-//        ((TableRow) findViewById(R.id.row2)).addView(button);
+        tableLayout.addItem(button3);
 
         setNotificationChannels();
         setFirebase();

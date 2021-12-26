@@ -20,43 +20,29 @@ public class MyTable extends TableLayout {
     }
 
     public void addItem(DeviceButton deviceButton) {
-        boolean enabled;
-        TableRow lastRow;
         if (getChildCount() > 0) {
-            lastRow = (TableRow) getLastRow();
-            DeviceButton childAt = (DeviceButton) lastRow.getChildAt(1);
-            enabled = childAt.isEnabled();
-            if (enabled) {
+            MyTableRow lastRow = getLastRow();
+            if (!lastRow.addItem(deviceButton)) {
                 TableRow tableRow = addRow();
                 tableRow.addView(deviceButton, 0);
                 tableRow.removeViewAt(1);
-            } else {
-                lastRow.addView(deviceButton);
-                lastRow.removeViewAt(1);
             }
         } else {
-            TableRow tableRow = addRow();
-            tableRow.addView(deviceButton, 0);
+            MyTableRow tableRow = addRow();
+            tableRow.addItem(deviceButton);
         }
 
     }
 
     @NonNull
-    private TableRow addRow() {
-        TableRow tableRow = new TableRow(getContext());
-        tableRow.setPadding(80, 0, 80, 0);
-        tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        tableRow.setDividerDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.empty_tall_divider));
-        tableRow.setOrientation(TableRow.HORIZONTAL);
-        tableRow.setShowDividers(TableRow.SHOW_DIVIDER_MIDDLE);
-        tableRow.addView(new DeviceButton(getContext()));
-        tableRow.addView(new DeviceButton(getContext()));
+    private MyTableRow addRow() {
+        MyTableRow tableRow = new MyTableRow(getContext());
         addView(tableRow);
         return tableRow;
     }
 
-    private View getLastRow() {
-        return getChildAt(getChildCount() - 1);
+    private MyTableRow getLastRow() {
+        return (MyTableRow) getChildAt(getChildCount() - 1);
     }
 
 }
