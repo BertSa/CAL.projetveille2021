@@ -69,6 +69,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             return;
         }
 
+            Log.d(TAG, channelId);
         switch (channelId) {
             case "laundry":
                 sendNotification(channelId, title, text);

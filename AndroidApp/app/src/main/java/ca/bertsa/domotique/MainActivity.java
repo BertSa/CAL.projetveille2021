@@ -9,26 +9,38 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import ca.bertsa.domotique.devices.DeviceButton;
-import ca.bertsa.domotique.devices.DevicesTable;
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.bertsa.domotique.models.devices.Device;
+import ca.bertsa.domotique.models.devices.DeviceButton;
+import ca.bertsa.domotique.models.devices.DevicesTable;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
+    List<Device> devices = new ArrayList<>();
+    DevicesTable tableLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DevicesTable tableLayout = findViewById(R.id.table);
-        DeviceButton button = new DeviceButton(this, "Valve");
-        DeviceButton button2 = new DeviceButton(this, "Valve");
-        DeviceButton button3 = new DeviceButton(this, "Salue");
+        tableLayout = findViewById(R.id.table);
+        DeviceButton button = new DeviceButton(this, "Valve", false);
+        DeviceButton button2 = new DeviceButton(this, "Valve", true);
+        DeviceButton button3 = new DeviceButton(this, "Salue", false);
 
         tableLayout.addItem(button);
         tableLayout.addItem(button2);
@@ -52,7 +64,52 @@ public class MainActivity extends AppCompatActivity {
                     String msg = getString(R.string.msg_token_fmt, token);
                     Log.d(TAG, msg);
                 });
-        String topic = "waterleak";
+        basicReadWrite();
+    }
+
+    public void basicReadWrite() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("devices");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dataSnapshot.getChildren().forEach(data -> {
+                    Device device = data.getValue(Device.class);
+                    if (device != null) {
+                        device.setRef(data.getKey());
+                        devices.add(device);
+                        DeviceButton deviceButton = new DeviceButton(MainActivity.this, device.getTitle(), device.isToggleable());
+
+                        data.getRef().child("status").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot mstatus) {
+                                Boolean status = mstatus.getValue(boolean.class);
+                                if (status == null)
+                                    return;
+                                deviceButton.setActivated(status);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                        tableLayout.addItem(deviceButton);
+                    }
+                });
+                for (Device device : devices) {
+                    subscribeToTopic(device.getTopic());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void subscribeToTopic(String topic) {
         FirebaseMessaging.getInstance()
                 .subscribeToTopic(topic)
                 .addOnCompleteListener(task -> {

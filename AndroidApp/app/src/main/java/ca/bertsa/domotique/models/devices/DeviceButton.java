@@ -1,4 +1,4 @@
-package ca.bertsa.domotique.devices;
+package ca.bertsa.domotique.models.devices;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,35 +15,47 @@ import ca.bertsa.domotique.R;
 
 public class DeviceButton extends MaterialButton {
 
-    public DeviceButton(@NonNull Context context, String text) {
+    private final boolean toggleable;
+
+    public DeviceButton(@NonNull Context context, String text, boolean toggleable) {
         super(context, null, R.attr.materialButtonOutlinedStyle);
+        this.toggleable = toggleable;
+
         setSingleLine();
         TableRow.LayoutParams param = new TableRow.LayoutParams(0, 300, 1.0f);
         setLayoutParams(param);
         setAllCaps(true);
         setText(text);
-
-        setOnClickListener(view -> toggle(!isActivated()));
     }
 
     public DeviceButton(@NonNull Context context) {
-        super(context,null, R.attr.materialButtonOutlinedStyle);
+        super(context, null, R.attr.materialButtonOutlinedStyle);
         TableRow.LayoutParams param = new TableRow.LayoutParams(0, 300, 1.0f);
         setLayoutParams(param);
         setEnabled(false);
         setText("+");
+        toggleable = false;
     }
 
     public DeviceButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        toggleable = false;
     }
 
     public DeviceButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        toggleable = false;
     }
 
-    private void toggle(boolean activated) {
-        setActivated(activated);
+    @Override
+    public void toggle() {
+        if (!toggleable) return;
+        setActivated(!isActivated());
+    }
+
+    @Override
+    public void setActivated(boolean activated) {
+        super.setActivated(activated);
         if (activated) {
             setTextColor(getResources().getColor(R.color.design_default_color_on_primary, getContext().getTheme()));
             setBackgroundColor(getResources().getColor(R.color.domo_primary_800, getContext().getTheme()));

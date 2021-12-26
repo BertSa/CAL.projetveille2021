@@ -1,4 +1,4 @@
-package ca.bertsa.domotique.devices;
+package ca.bertsa.domotique.models.devices;
 
 import android.content.Context;
 import android.util.AttributeSet;
