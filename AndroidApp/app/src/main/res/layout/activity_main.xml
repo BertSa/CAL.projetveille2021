@@ -30,18 +30,19 @@
             android:id="@+id/row1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:divider="@drawable/empty_tall_divider"
             android:orientation="horizontal"
-            android:paddingHorizontal="30dp">
+            android:paddingHorizontal="30dp"
+            android:showDividers="middle">
 
             <Button
                 android:id="@+id/btn1"
-
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="test" />
+                android:text="Valve" />
 
             <Button
                 android:id="@+id/btn2"
@@ -52,6 +53,26 @@
                 android:padding="0dp"
                 android:singleLine="true"
                 android:text="Arterial tension disturbance" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/row2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/empty_tall_divider"
+            android:orientation="horizontal"
+            android:paddingHorizontal="30dp"
+            android:showDividers="middle">
+
+            <Button
+                android:id="@+id/btn3"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="Valve" />
+
         </TableRow>
 
     </TableLayout>
