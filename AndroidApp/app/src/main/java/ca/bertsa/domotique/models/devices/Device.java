@@ -16,16 +16,8 @@ public class Device {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getTopic() {
         return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
     }
 
     public boolean isStatus() {
@@ -40,10 +32,6 @@ public class Device {
         return channelId;
     }
 
-    public void setChannelId(String channelId) {
-        this.channelId = channelId;
-    }
-
     public String getRef() {
         return ref;
     }
@@ -54,10 +42,6 @@ public class Device {
 
     public boolean isToggleable() {
         return toggleable;
-    }
-
-    public void setToggleable(boolean toggleable) {
-        this.toggleable = toggleable;
     }
 
     @Override
