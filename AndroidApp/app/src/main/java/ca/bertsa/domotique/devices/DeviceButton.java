@@ -1,4 +1,4 @@
-package ca.bertsa.domotique;
+package ca.bertsa.domotique.devices;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.button.MaterialButton;
 
+import ca.bertsa.domotique.R;
+
 public class DeviceButton extends MaterialButton {
 
     public DeviceButton(@NonNull Context context, String text) {
@@ -21,10 +23,7 @@ public class DeviceButton extends MaterialButton {
         setAllCaps(true);
         setText(text);
 
-        setOnClickListener(view -> {
-            toggle(!isActivated());
-            Log.d("BTN", String.valueOf(isChecked()));
-        });
+        setOnClickListener(view -> toggle(!isActivated()));
     }
 
     public DeviceButton(@NonNull Context context) {
@@ -46,15 +45,15 @@ public class DeviceButton extends MaterialButton {
     private void toggle(boolean activated) {
         setActivated(activated);
         if (activated) {
+            setTextColor(getResources().getColor(R.color.design_default_color_on_primary, getContext().getTheme()));
+            setBackgroundColor(getResources().getColor(R.color.domo_primary_800, getContext().getTheme()));
+            setOutlineAmbientShadowColor(Color.TRANSPARENT);
+            setOutlineSpotShadowColor(Color.TRANSPARENT);
+        } else {
+            setTextColor(getResources().getColor(R.color.domo_primary_300, getContext().getTheme()));
             setBackgroundColor(Color.TRANSPARENT);
             setOutlineAmbientShadowColor(-16777216);
             setOutlineSpotShadowColor(-16777216);
-            setTextColor(getResources().getColor(R.color.domo_primary_300, getContext().getTheme()));
-        } else {
-            setOutlineAmbientShadowColor(Color.TRANSPARENT);
-            setOutlineSpotShadowColor(Color.TRANSPARENT);
-            setBackgroundColor(getResources().getColor(R.color.domo_primary_800, getContext().getTheme()));
-            setTextColor(getResources().getColor(R.color.design_default_color_on_primary, getContext().getTheme()));
         }
     }
 

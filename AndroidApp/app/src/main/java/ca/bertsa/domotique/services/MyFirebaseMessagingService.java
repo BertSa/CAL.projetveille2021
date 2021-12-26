@@ -1,4 +1,4 @@
-package ca.bertsa.domotique;
+package ca.bertsa.domotique.services;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -16,6 +16,10 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
+
+import ca.bertsa.domotique.LockScreenActivity;
+import ca.bertsa.domotique.MainActivity;
+import ca.bertsa.domotique.R;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 

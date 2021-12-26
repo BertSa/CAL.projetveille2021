@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.074" />
 
-    <ca.bertsa.domotique.MyTable
+    <ca.bertsa.domotique.devices.DevicesTable
         android:id="@+id/table"
         android:layout_width="409dp"
         android:layout_height="520dp"
@@ -27,63 +27,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.157">
-
-<!--        <ca.bertsa.domotique.MyTableRow-->
-<!--            android:id="@+id/row1"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:divider="@drawable/empty_tall_divider"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:paddingHorizontal="30dp"-->
-<!--            android:showDividers="middle">-->
-
-<!--            <ca.bertsa.domotique.DeviceButton-->
-<!--                android:id="@+id/btn1"-->
-<!--                style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:singleLine="true"-->
-<!--                android:text="Valve" />-->
-
-<!--            <ca.bertsa.domotique.DeviceButton-->
-<!--                android:id="@+id/btn2"-->
-<!--                style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:padding="0dp"-->
-<!--                android:singleLine="true"-->
-<!--                android:text="Arterial tension disturbance" />-->
-<!--        </ca.bertsa.domotique.MyTableRow>-->
-
-<!--        <ca.bertsa.domotique.MyTableRow-->
-<!--            android:id="@+id/row2"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:divider="@drawable/empty_tall_divider"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:paddingHorizontal="30dp"-->
-<!--            android:showDividers="middle">-->
-
-<!--            <ca.bertsa.domotique.DeviceButton-->
-<!--                android:id="@+id/btn3"-->
-<!--                style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:singleLine="true"-->
-<!--                android:text="Valve" />-->
-<!--            <ca.bertsa.domotique.DeviceButton-->
-<!--                android:id="@+id/btn4"-->
-<!--                style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:singleLine="true"-->
-<!--                android:text="Valve" />-->
-
-<!--        </ca.bertsa.domotique.MyTableRow>-->
-
-    </ca.bertsa.domotique.MyTable>
+    </ca.bertsa.domotique.devices.DevicesTable>
 </androidx.constraintlayout.widget.ConstraintLayout>

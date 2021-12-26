@@ -8,14 +8,14 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import ca.bertsa.domotique.devices.DeviceButton;
+import ca.bertsa.domotique.devices.DevicesTable;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -24,10 +24,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DevicesTable tableLayout = findViewById(R.id.table);
         DeviceButton button = new DeviceButton(this, "Valve");
         DeviceButton button2 = new DeviceButton(this, "Valve");
         DeviceButton button3 = new DeviceButton(this, "Salue");
-        MyTable tableLayout = findViewById(R.id.table);
+
         tableLayout.addItem(button);
         tableLayout.addItem(button2);
         tableLayout.addItem(button3);
