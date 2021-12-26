@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.074" />
 
-    <TableLayout
+    <ca.bertsa.domotique.MyTable
         android:id="@+id/table"
         android:layout_width="409dp"
         android:layout_height="520dp"
@@ -37,7 +37,7 @@
             android:paddingHorizontal="30dp"
             android:showDividers="middle">
 
-            <Button
+            <ca.bertsa.domotique.DeviceButton
                 android:id="@+id/btn1"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
@@ -46,7 +46,7 @@
                 android:singleLine="true"
                 android:text="Valve" />
 
-            <Button
+            <ca.bertsa.domotique.DeviceButton
                 android:id="@+id/btn2"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
@@ -66,8 +66,16 @@
             android:paddingHorizontal="30dp"
             android:showDividers="middle">
 
-            <Button
+            <ca.bertsa.domotique.DeviceButton
                 android:id="@+id/btn3"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="Valve" />
+            <ca.bertsa.domotique.DeviceButton
+                android:id="@+id/btn4"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
@@ -77,5 +85,5 @@
 
         </TableRow>
 
-    </TableLayout>
+    </ca.bertsa.domotique.MyTable>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,10 +2,12 @@ package ca.bertsa.domotique;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TableRow;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -26,7 +28,19 @@ public class DeviceButton extends MaterialButton {
     }
 
     public DeviceButton(@NonNull Context context) {
-        super(context);
+        super(context,null, R.attr.materialButtonOutlinedStyle);
+        TableRow.LayoutParams param = new TableRow.LayoutParams(0, 300, 1.0f);
+        setLayoutParams(param);
+        setEnabled(false);
+        setText("+");
+    }
+
+    public DeviceButton(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public DeviceButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     private void toggle(boolean activated) {
