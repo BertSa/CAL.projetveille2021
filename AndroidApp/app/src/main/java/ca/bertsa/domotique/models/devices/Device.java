@@ -5,7 +5,6 @@ public class Device {
     private String topic;
     private boolean status;
     private String channelId;
-    private String ref;
     private boolean toggleable;
 
 
@@ -32,14 +31,6 @@ public class Device {
         return channelId;
     }
 
-    public String getRef() {
-        return ref;
-    }
-
-    public void setRef(String ref) {
-        this.ref = ref;
-    }
-
     public boolean isToggleable() {
         return toggleable;
     }
@@ -51,7 +42,6 @@ public class Device {
                 ", topic='" + topic + '\'' +
                 ", status=" + status +
                 ", channelId='" + channelId + '\'' +
-                ", ref='" + ref + '\'' +
                 ", toggleable=" + toggleable +
                 '}';
     }

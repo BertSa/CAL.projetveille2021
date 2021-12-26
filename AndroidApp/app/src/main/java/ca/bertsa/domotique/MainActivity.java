@@ -36,16 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         tableLayout = findViewById(R.id.table);
-        DeviceButton button = new DeviceButton(this, "Valve", false);
-        DeviceButton button2 = new DeviceButton(this, "Valve", true);
-        DeviceButton button3 = new DeviceButton(this, "Salue", false);
-
-        tableLayout.addItem(button);
-        tableLayout.addItem(button2);
-        tableLayout.addItem(button3);
-
         setNotificationChannels();
         setFirebase();
     }
@@ -64,49 +55,48 @@ public class MainActivity extends AppCompatActivity {
                     String msg = getString(R.string.msg_token_fmt, token);
                     Log.d(TAG, msg);
                 });
-        basicReadWrite();
-    }
 
-    public void basicReadWrite() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("devices");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dataSnapshot.getChildren().forEach(data -> {
-                    Device device = data.getValue(Device.class);
-                    if (device != null) {
-                        device.setRef(data.getKey());
-                        devices.add(device);
-                        DeviceButton deviceButton = new DeviceButton(MainActivity.this, device.getTitle(), device.isToggleable());
+        FirebaseDatabase.getInstance().getReference(getString(R.string.database_ref_path))
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        dataSnapshot.getChildren().forEach(data -> {
+                            Device device = data.getValue(Device.class);
+                            if (device != null) {
+                                devices.add(device);
+                                DeviceButton deviceButton = new DeviceButton(MainActivity.this, device.getTitle(), device.isToggleable());
 
-                        data.getRef().child("status").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot mstatus) {
-                                Boolean status = mstatus.getValue(boolean.class);
-                                if (status == null)
-                                    return;
-                                deviceButton.setActivated(status);
-                            }
+                                DatabaseReference statusRef = data.getRef().child(getString(R.string.status));
+                                statusRef.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot mstatus) {
+                                        Boolean status = mstatus.getValue(boolean.class);
+                                        if (status == null)
+                                            return;
+                                        deviceButton.setActivated(status);
+                                    }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
 
+                                    }
+                                });
+
+                                deviceButton.setOnClickListener(view -> statusRef.setValue(deviceButton.isActivated()));
+                                tableLayout.addItem(deviceButton);
                             }
                         });
 
-                        tableLayout.addItem(deviceButton);
+                        for (Device device : devices) {
+                            subscribeToTopic(device.getTopic());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
-                for (Device device : devices) {
-                    subscribeToTopic(device.getTopic());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     private void subscribeToTopic(String topic) {
@@ -126,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
     private void setNotificationChannels() {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         NotificationChannel channel = new NotificationChannel("waterleak", "WaterLeak", NotificationManager.IMPORTANCE_HIGH);
         channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         channel.setBypassDnd(true);

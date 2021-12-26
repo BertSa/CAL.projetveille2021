@@ -3,7 +3,6 @@ package ca.bertsa.domotique.models.devices;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TableRow;
 
 import androidx.annotation.NonNull;
@@ -15,6 +14,7 @@ import ca.bertsa.domotique.R;
 
 public class DeviceButton extends MaterialButton {
 
+    private static final int COLOR_OUTLINE = -16777216;
     private final boolean toggleable;
 
     public DeviceButton(@NonNull Context context, String text, boolean toggleable) {
@@ -64,8 +64,8 @@ public class DeviceButton extends MaterialButton {
         } else {
             setTextColor(getResources().getColor(R.color.domo_primary_300, getContext().getTheme()));
             setBackgroundColor(Color.TRANSPARENT);
-            setOutlineAmbientShadowColor(-16777216);
-            setOutlineSpotShadowColor(-16777216);
+            setOutlineAmbientShadowColor(COLOR_OUTLINE);
+            setOutlineSpotShadowColor(COLOR_OUTLINE);
         }
     }
 
