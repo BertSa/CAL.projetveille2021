@@ -23,11 +23,9 @@
         <activity
             android:theme="@style/Theme.AndroidApp"
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:showOnLockScreen="true">
         </activity>
-        <activity
-            android:name=".LockScreenActivity"
-            android:showOnLockScreen="true" />
 
         <service
             android:name=".services.MyFirebaseMessagingService"

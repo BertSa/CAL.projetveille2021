@@ -27,5 +27,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.157">
+        <ca.bertsa.domotique.models.devices.DevicesTableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ca.bertsa.domotique.models.devices.DeviceButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ca.bertsa.domotique.models.devices.DeviceButton>
+        </ca.bertsa.domotique.models.devices.DevicesTableRow>
     </ca.bertsa.domotique.models.devices.DevicesTable>
 </androidx.constraintlayout.widget.ConstraintLayout>

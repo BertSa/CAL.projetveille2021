@@ -17,7 +17,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
-import ca.bertsa.domotique.LockScreenActivity;
 import ca.bertsa.domotique.MainActivity;
 import ca.bertsa.domotique.R;
 
@@ -89,7 +88,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param text      FCM message body received.
      */
     private void sendFullscreenNotification(String channelId, String title, String text) {
-        Intent intent = new Intent(this, LockScreenActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.Builder builder = getDefaultNotification(channelId, title, text, pendingIntent)

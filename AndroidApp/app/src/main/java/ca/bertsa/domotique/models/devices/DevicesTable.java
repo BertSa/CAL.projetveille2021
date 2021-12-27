@@ -9,8 +9,7 @@ import androidx.annotation.NonNull;
 public class DevicesTable extends TableLayout {
 
     public DevicesTable(Context context) {
-        super(context);
-        addRow();
+        this(context, null);
     }
 
     public DevicesTable(Context context, AttributeSet attrs) {
@@ -25,7 +24,7 @@ public class DevicesTable extends TableLayout {
                 DevicesTableRow tableRow = addRow();
                 tableRow.addItem(deviceButton);
             }
-            if (lastRow.isFull()){
+            if (lastRow.isFull()) {
                 addRow();
             }
         } else {

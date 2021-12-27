@@ -40,7 +40,7 @@ class FirebaseService:
     def send_to_topic(self, data: dict):
         message = messaging.Message(
             android=messaging.AndroidConfig(
-                data=data,
+                data=data
             ),
             topic=self.topic,
         )
