@@ -1,6 +1,7 @@
 package ca.bertsa.domotique.models.devices;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.TableRow;
@@ -49,6 +50,7 @@ public class DeviceButton extends MaterialButton {
 
     @Override
     public void toggle() {
+        super.toggle();
         if (!toggleable) return;
         setActivated(!isActivated());
     }
@@ -56,13 +58,14 @@ public class DeviceButton extends MaterialButton {
     @Override
     public void setActivated(boolean activated) {
         super.setActivated(activated);
+        final Resources.Theme theme = getContext().getTheme();
         if (activated) {
-            setTextColor(getResources().getColor(R.color.design_default_color_on_primary, getContext().getTheme()));
-            setBackgroundColor(getResources().getColor(R.color.domo_primary_800, getContext().getTheme()));
+            setTextColor(getResources().getColor(R.color.design_default_color_on_primary, theme));
+            setBackgroundColor(getResources().getColor(R.color.domo_primary_800, theme));
             setOutlineAmbientShadowColor(Color.TRANSPARENT);
             setOutlineSpotShadowColor(Color.TRANSPARENT);
         } else {
-            setTextColor(getResources().getColor(R.color.domo_primary_300, getContext().getTheme()));
+            setTextColor(getResources().getColor(R.color.domo_primary_300, theme));
             setBackgroundColor(Color.TRANSPARENT);
             setOutlineAmbientShadowColor(COLOR_OUTLINE);
             setOutlineSpotShadowColor(COLOR_OUTLINE);
