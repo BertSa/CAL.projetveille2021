@@ -6,36 +6,61 @@
 
 import type { Node } from "react";
 import React from "react";
-import PushNotification, { Importance } from "react-native-push-notification";
-import { AppRegistry, Button, SafeAreaView, ScrollView, ToastAndroid, useColorScheme, View } from "react-native";
-
-import { Colors, DebugInstructions, ReloadInstructions } from "react-native/Libraries/NewAppScreen";
-import { Section } from "./Section";
+import PushNotification from "react-native-push-notification";
+import { Button, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native";
+import SwitchButton from "./components/SwitchButton";
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() !== "dark";
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
   const pressed = () => {
     console.log("pressed");
     PushNotification.localNotification({
       /* Android Only Properties */
-      channelId: "default-channel-id", // (optional) Create the channel in user's device
+      channelId: "laundry", // (optional) Create the channel in user's device
       title: "My Notification Title",
       message: "My Notification Message",
       actions: ["Yes", "No"],
     });
-    ToastAndroid.show("Toast", ToastAndroid.SHORT);
   };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      {/*<StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />*/}
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        {/*<Header />*/}
+        contentInsetAdjustmentBehavior="automatic">
+        <Text style={{ fontSize: 32, fontWeight: "bold", color: "#757575" }}>
+          App Setting
+        </Text>
+        <Text style={{ color: "#bababa", marginTop: 12 }}>
+          Fundamental app settings to configure
+        </Text>
+        <View style={styles.fixToText}>
+          <SwitchButton
+            text="Laundry"
+            inactiveImageSource={require("./assets/laundry.png")}
+            activeImageSource={require("./assets/laundry.png")}
+            onPress={(isActive: boolean) => {
+              console.log(isActive);
+            }}
+            style={styles.switchButton}
+            textStyle={{
+              fontWeight: "600",
+            }}
+          />
+          <SwitchButton
+            text="Valve"
+            inactiveImageSource={require("./assets/valve.png")}
+            activeImageSource={require("./assets/valve.png")}
+            onPress={(isActive: boolean) => {
+              console.log(isActive);
+            }}
+            mainColor="#2196f2"
+            tintColor="#ee3322"
+            textStyle={{
+              fontWeight: "600",
+            }}
+          />
+        </View>
+        <Separator />
         <Button
           title="Go to Details Activity"
           onPress={() => {
@@ -43,23 +68,37 @@ const App: () => Node = () => {
           }}
           color={"#333"}
         />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step Oned">Edite your edits.</Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    marginHorizontal: 16,
+    paddingVertical: 8,
+  },
+  title: {
+    textAlign: "center",
+    marginVertical: 8,
+  },
+  fixToText: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    paddingHorizontal: 16,
+    marginTop: 32,
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: "#737373",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  switchButton: {},
+});
+
+
+const Separator = () => {
+  return <View style={styles.separator} />;
+};

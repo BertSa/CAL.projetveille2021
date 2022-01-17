@@ -1,11 +1,9 @@
 import PushNotification, { Importance } from "react-native-push-notification";
-import { AppRegistry } from "react-native";
 
 export class MyNotification {
-  isInitialized: boolean = false;
+
   initialize() {
     console.log("Initializing Push Notification");
-    this.isInitialized = true;
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: token => {
@@ -28,7 +26,6 @@ export class MyNotification {
         console.log("ACTION:", notification.action);
         console.log("NOTIFICATION:", notification);
 
-        // process the action
       },
 
 
@@ -59,18 +56,17 @@ export class MyNotification {
     });
     PushNotification.createChannel(
       {
-        channelId: "default-channel-id", // (required)
-        channelName: `Default channel`, // (required)
-        channelDescription: "A default channel", // (optional) default: undefined.
-        playSound:true,
+        channelId: "laundry",
+        channelName: `Laundry`,
+        channelDescription: "A default channel",
+        playSound: true,
         // soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
-        importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
-        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
+        importance: Importance.HIGH,
+        vibrate: true,
       },
-      (created) => console.log(`createChannel 'default-channel-id' returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+      (created) => console.log(`createChannel 'laundry' returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
     );
   }
-
 }
 
 const myNotification = new MyNotification();
