@@ -12,7 +12,7 @@ import SwitchButton from "./components/SwitchButton/SwitchButton";
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === "dark";
   return (
-    <SafeAreaView style={{ ...styles.container, backgroundColor: useColorScheme() === "dark" ? "#333" : "#fff" }}>
+    <SafeAreaView style={{ ...styles.container, backgroundColor: isDarkMode ? "#333" : "#EEE" }}>
       <StatusBar translucent={true} barStyle={isDarkMode ? "light-content" : "dark-content"}
                  backgroundColor={"#00000000"} />
       <ScrollView
@@ -30,6 +30,7 @@ const App: () => Node = () => {
               inactiveImageSource={require("./assets/laundry.png")}
               activeImageSource={require("./assets/laundry.png")}
               style={styles.switchButton}
+              originalColor= {isDarkMode ? "#555555" : "#fff"}
               textStyle={{
                 fontWeight: "600",
               }}
@@ -47,6 +48,7 @@ const App: () => Node = () => {
               }}
               mainColor="#2196f2"
               tintColor="#ee3322"
+              originalColor={isDarkMode ? "#555555" : "#fff"}
               onPress={(isActive: boolean) => {
                 console.log(isActive);
               }}
