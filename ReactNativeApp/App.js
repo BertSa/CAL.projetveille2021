@@ -6,25 +6,15 @@
 
 import type { Node } from "react";
 import React from "react";
-import PushNotification from "react-native-push-notification";
-import { Button, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native";
 import SwitchButton from "./components/SwitchButton/SwitchButton";
 
 const App: () => Node = () => {
-  const isDarkMode = useColorScheme() !== "dark";
-  const pressed = () => {
-    console.log("pressed");
-    PushNotification.localNotification({
-      /* Android Only Properties */
-      channelId: "laundry",
-      title: "My Notification Title",
-      message: "My Notification Message",
-      actions: ["Yes", "No"],
-    });
-  };
+  const isDarkMode = useColorScheme() === "dark";
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+    <SafeAreaView style={{ ...styles.container, backgroundColor: useColorScheme() === "dark" ? "#333" : "#fff" }}>
+      <StatusBar translucent={true} barStyle={isDarkMode ? "light-content" : "dark-content"}
+                 backgroundColor={"#00000000"} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic">
         <Text style={{ fontSize: 32, fontWeight: "bold", color: "#757575" }}>
@@ -39,38 +29,31 @@ const App: () => Node = () => {
               text="Laundry"
               inactiveImageSource={require("./assets/laundry.png")}
               activeImageSource={require("./assets/laundry.png")}
-              onPress={(isActive: boolean) => {
-                console.log(isActive);
-              }}
               style={styles.switchButton}
               textStyle={{
                 fontWeight: "600",
+              }}
+              onPress={(isActive: boolean) => {
+                console.log(isActive);
               }}
             />
             <SwitchButton
               text="Valve"
-              style={styles.switchButton}
               inactiveImageSource={require("./assets/valve.png")}
               activeImageSource={require("./assets/valve.png")}
-              onPress={(isActive: boolean) => {
-                console.log(isActive);
+              style={styles.switchButton}
+              textStyle={{
+                fontWeight: "600",
               }}
               mainColor="#2196f2"
               tintColor="#ee3322"
-              textStyle={{
-                fontWeight: "600",
+              onPress={(isActive: boolean) => {
+                console.log(isActive);
               }}
             />
           </WrapContainer>
         </View>
         <Separator />
-        <Button
-          title="Go to Details Activity"
-          onPress={() => {
-            pressed();
-          }}
-          color={"#333"}
-        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -79,8 +62,8 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 16,
-    paddingVertical: 8,
+    paddingTop: 55,
+    paddingHorizontal: 20,
   },
   title: {
     textAlign: "center",
@@ -90,17 +73,13 @@ const styles = StyleSheet.create({
     marginTop: 32,
     flex: 1,
   },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: "#737373",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
+  separator: {},
   switchButton: {
     marginHorizontal: 12,
     marginTop: 8,
   },
   wrapContainer: {
-    justifyContent:"space-evenly",
+    justifyContent: "space-evenly",
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%",
@@ -109,7 +88,13 @@ const styles = StyleSheet.create({
 
 
 const Separator = () => {
-  return <View style={styles.separator} />;
+  const isDarkMode = useColorScheme() === "dark";
+  return <View style={{
+    marginVertical: 8,
+    borderBottomColor: isDarkMode ? "#EEE" : "#737373",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  }
+  } />;
 };
 const WrapContainer = (props) => (
   <View style={[styles.wrapContainer, props.style]}>
