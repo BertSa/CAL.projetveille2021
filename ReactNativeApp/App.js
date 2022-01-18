@@ -8,6 +8,7 @@ import type { Node } from "react";
 import React from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native";
 import SwitchButton from "./components/SwitchButton/SwitchButton";
+import PushNotification from "react-native-push-notification";
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === "dark";
@@ -51,6 +52,14 @@ const App: () => Node = () => {
               originalColor={isDarkMode ? "#555555" : "#fff"}
               onPress={(isActive: boolean) => {
                 console.log(isActive);
+                PushNotification.localNotification({
+                  channelId: "laundry",
+                  title: "DomoApp",
+                  message: "Valve is now " + (isActive ? "open" : "closed"),
+                  playSound: true,
+                  soundName: "default",
+                  number: "1",
+                });
               }}
             />
           </WrapContainer>
@@ -75,7 +84,6 @@ const styles = StyleSheet.create({
     marginTop: 32,
     flex: 1,
   },
-  separator: {},
   switchButton: {
     marginHorizontal: 12,
     marginTop: 8,

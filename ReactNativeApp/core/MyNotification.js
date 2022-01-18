@@ -54,15 +54,17 @@ export class MyNotification {
        */
       requestPermissions: true,
     });
+    PushNotification.deleteChannel("laundry");
     PushNotification.createChannel(
       {
         channelId: "laundry",
         channelName: `Laundry`,
         channelDescription: "A default channel",
         playSound: true,
-        // soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
+        soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
         importance: Importance.HIGH,
-        vibrate: true,
+        priority: "high",
+        visibility: "public",
       },
       (created) => console.log(`createChannel 'laundry' returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
     );
