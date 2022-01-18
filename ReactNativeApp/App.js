@@ -31,7 +31,7 @@ const App: () => Node = () => {
               inactiveImageSource={require("./assets/laundry.png")}
               activeImageSource={require("./assets/laundry.png")}
               style={styles.switchButton}
-              originalColor= {isDarkMode ? "#555555" : "#fff"}
+              originalColor={isDarkMode ? "#555555" : "#fff"}
               textStyle={{
                 fontWeight: "600",
               }}
@@ -56,9 +56,6 @@ const App: () => Node = () => {
                   channelId: "laundry",
                   title: "DomoApp",
                   message: "Valve is now " + (isActive ? "open" : "closed"),
-                  playSound: true,
-                  soundName: "default",
-                  number: "1",
                 });
               }}
             />
