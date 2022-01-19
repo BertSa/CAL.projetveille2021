@@ -33,7 +33,7 @@ const App: () => Node = () => {
               originalColor={isDarkMode ? "#555555" : "#fff"}
               sameTextColor
               textStyle={{
-                fontWeight: "600",
+                fontWeight: "600"
               }}
               onPress={(isActive: boolean) => {
                 console.log(isActive);
@@ -45,7 +45,7 @@ const App: () => Node = () => {
               activeImageSource={require("./assets/valve.png")}
               style={styles.switchButton}
               textStyle={{
-                fontWeight: "600",
+                fontWeight: "600"
               }}
               mainColor="#2196f2"
               tintColor="#ee3322"
@@ -67,26 +67,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 55,
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
   },
   title: {
     textAlign: "center",
-    marginVertical: 8,
+    marginVertical: 8
   },
   fixToText: {
     marginTop: 32,
-    flex: 1,
+    flex: 1
   },
   switchButton: {
     marginHorizontal: 12,
-    marginTop: 8,
+    marginTop: 8
   },
   wrapContainer: {
     justifyContent: "space-evenly",
     flexDirection: "row",
     flexWrap: "wrap",
-    width: "100%",
-  },
+    width: "100%"
+  }
 });
 
 
@@ -95,9 +95,8 @@ const Separator = () => {
   return <View style={{
     marginVertical: 8,
     borderBottomColor: isDarkMode ? "#EEE" : "#737373",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  }
-  } />;
+    borderBottomWidth: StyleSheet.hairlineWidth
+  }} />;
 };
 const WrapContainer = (props) => (
   <View style={[styles.wrapContainer, props.style]}>
