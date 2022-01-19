@@ -1,84 +1,112 @@
 /**
  * Sample React Native App
- * https://github.com/facebook/react-native
- *
  * @format
  * @flow strict-local
  */
 
-import type {Node} from 'react';
-import React from 'react';
-import {
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  Header,
-  LearnMoreLinks,
-} from 'react-native/Libraries/NewAppScreen';
-import PushNotification from 'react-native-push-notification';
+import type { Node } from "react";
+import React from "react";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native";
+import PushNotification from "react-native-push-notification";
+import SwitchButton from "@freakycoder/react-native-switch-button";
 
 const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+  const isDarkMode = useColorScheme() === "dark";
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <SafeAreaView style={{ ...styles.container, backgroundColor: isDarkMode ? "#333" : "#EEE" }}>
+      <StatusBar translucent={true} barStyle={isDarkMode ? "light-content" : "dark-content"}
+                 backgroundColor={"#00000000"} />
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Button
-            title="Go to Details"
-            onPress={() => {
-              PushNotification.localNotification({
-                title: 'Hello',
-                message: 'Hello World',
-                playSound: true,
-                channelId: 'alert',
-                autoCancel: false,
-              });
-            }}
-          />
-          <LearnMoreLinks />
+        contentInsetAdjustmentBehavior="automatic">
+        <Text style={{ fontSize: 32, fontWeight: "bold", color: "#757575" }}>
+          DomoApp
+        </Text>
+        <Text style={{ color: "#bababa", marginTop: 12 }}>
+          Fundamental app settings to configure
+        </Text>
+        <View style={styles.fixToText}>
+          <WrapContainer>
+            <SwitchButton
+              text="Laundry"
+              inactiveImageSource={require("./assets/laundry.png")}
+              activeImageSource={require("./assets/laundry.png")}
+              style={styles.switchButton}
+              originalColor={isDarkMode ? "#555555" : "#fff"}
+              sameTextColor
+              textStyle={{
+                fontWeight: "600",
+              }}
+              onPress={(isActive: boolean) => {
+                console.log(isActive);
+              }}
+            />
+            <SwitchButton
+              text="Valve"
+              inactiveImageSource={require("./assets/valve.png")}
+              activeImageSource={require("./assets/valve.png")}
+              style={styles.switchButton}
+              textStyle={{
+                fontWeight: "600",
+              }}
+              mainColor="#2196f2"
+              tintColor="#ee3322"
+              originalColor={isDarkMode ? "#555555" : "#fff"}
+              sameTextColor
+              onPress={(isActive: boolean) => {
+                console.log(isActive);
+                PushNotification.localNotification({
+                  channelId: "alert",
+                  title: "DomoApp",
+                  message: "Valve is now " + (isActive ? "open" : "closed"),
+                });
+              }}
+            />
+          </WrapContainer>
         </View>
+        <Separator />
       </ScrollView>
     </SafeAreaView>
   );
 };
-
+export default App;
 const styles = StyleSheet.create({
-  sectionContainer: {
+  container: {
+    flex: 1,
+    paddingTop: 55,
+    paddingHorizontal: 20,
+  },
+  title: {
+    textAlign: "center",
+    marginVertical: 8,
+  },
+  fixToText: {
     marginTop: 32,
-    paddingHorizontal: 24,
+    flex: 1,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
+  switchButton: {
+    marginHorizontal: 12,
     marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
   },
-  highlight: {
-    fontWeight: '700',
+  wrapContainer: {
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
   },
 });
 
-export default App;
+
+const Separator = () => {
+  const isDarkMode = useColorScheme() === "dark";
+  return <View style={{
+    marginVertical: 8,
+    borderBottomColor: isDarkMode ? "#EEE" : "#737373",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  }
+  } />;
+};
+const WrapContainer = (props) => (
+  <View style={[styles.wrapContainer, props.style]}>
+    {props.children}
+  </View>
+);

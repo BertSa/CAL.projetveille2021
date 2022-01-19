@@ -7,9 +7,12 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build:android": "react-native bundle --platform=android --dev false --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res",
+    "build:ios": "react-native bundle --platform=ios --dev false --entry-file index.js --bundle-output ./ios/main.jsbundle --assets-dest ./ios"
   },
   "dependencies": {
+    "@freakycoder/react-native-switch-button": "github:BertSa/react-native-switch-button#0.1.2",
     "@react-native-firebase/app": "^14.2.2",
     "@react-native-firebase/messaging": "^14.2.2",
     "react": "17.0.2",
