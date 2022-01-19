@@ -1,37 +1,70 @@
 import messaging from "@react-native-firebase/messaging";
-import PushNotification from "react-native-push-notification";
+import PushNotification, { Importance } from "react-native-push-notification";
 
 export class mFirebase {
 
-    initialize() {
-        messaging().onMessage(async remoteMessage => {
-            console.log("Message handled", remoteMessage);
-            PushNotification.localNotification({
-                channelId: "alert",
-                title: "DomoApp",
-                message: "Valve is now ",
-            });
-        });
+  initialize() {
+    PushNotification.configure({
+      onRegister: function(token) {
+        console.log("TOKEN:", token);
+      },
+      onNotification: function(notification) {
+        console.log("NOTIFICATION:", notification);
+      },
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true
+      },
+      popInitialNotification: true,
+      requestPermissions: true
+    });
+    PushNotification.createChannel(
+      {
+        id: "laundry",
+        name: "laundry",
+        description: "default",
+        priority: "high",
+        vibrate: true,
+        sound: true,
+        light: true,
+        importance: Importance.HIGH,
+        visibility: "public",
+        badge: true
 
-        messaging().setBackgroundMessageHandler(async remoteMessage => {
-            PushNotification.localNotification({
-                channelId: "alert",
-                title: "DomoApp",
-                message: "Valve is now ",
-            });
-            console.log("Message handled in the background!", remoteMessage.data);
-        });
-        messaging().onNotificationOpenedApp(remoteMessage => {
-            console.log("Notification caused app to open from background state:", remoteMessage.data);
-        });
+      }
+    );
 
-        this.subscribeToTopic("laundry");
-    }
 
-    subscribeToTopic(topic) {
-        messaging().unsubscribeFromTopic(topic).then();
-        messaging().subscribeToTopic(topic).then(() => console.log(`Subscribed to topic ${topic}!`));
-    }
+    messaging().onMessage(async remoteMessage => {
+      console.log("Message handled", remoteMessage);
+      const { title, message, channelId } = remoteMessage.data;
+      PushNotification.localNotification({
+        channelId: channelId,
+        title: title,
+        message: message
+      });
+    });
+
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log("Notification caused app to open from background state:", remoteMessage.data);
+      const { title, message, channelId } = remoteMessage.data;
+      PushNotification.localNotification({
+        channelId: channelId,
+        title: title,
+        message: message
+      });
+    });
+
+    this.subscribeToTopic("laundry");
+    this.subscribeToTopic("waterleak");
+
+  }
+
+  subscribeToTopic(topic) {
+    messaging().unsubscribeFromTopic(topic).then();
+    messaging().subscribeToTopic(topic).then(() => console.log(`Subscribed to topic ${topic}!`));
+  }
 }
 
 const myFirebase = new mFirebase();

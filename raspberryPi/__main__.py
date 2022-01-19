@@ -32,7 +32,7 @@ def main():
                     service.send_to_topic(FirebaseMessagingData(
                         channel_id=config.firebase['channel_ids']["water_leak"],
                         title='Oops!',
-                        text='Water leak detected!'))
+                        message='Water leak detected!'))
                     service.setValve(False)
                     time.sleep(0.5)
 

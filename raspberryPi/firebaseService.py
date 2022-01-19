@@ -13,11 +13,11 @@ def my_listener(event):
 
 
 class FirebaseMessagingData(dict):
-    def __init__(self, channel_id, title, text):
+    def __init__(self, channel_id, title, message):
         super().__init__()
         self['channelId'] = channel_id
         self['title'] = title
-        self['text'] = text
+        self['message'] = message
 
 
 class FirebaseService:
@@ -63,4 +63,4 @@ if __name__ == '__main__':
         channel_id=config.firebase['channel_ids']['laundry'],
         # channel_id=config.firebase['channel_ids']['water_leak'],
         title='Oops!',
-        text='Water leak detected!'))
+        message='Water leak detected!'))

@@ -7,7 +7,6 @@
 import type { Node } from "react";
 import React from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native";
-import PushNotification from "react-native-push-notification";
 import SwitchButton from "@freakycoder/react-native-switch-button";
 
 const App: () => Node = () => {
@@ -54,11 +53,6 @@ const App: () => Node = () => {
               sameTextColor
               onPress={(isActive: boolean) => {
                 console.log(isActive);
-                PushNotification.localNotification({
-                  channelId: "alert",
-                  title: "DomoApp",
-                  message: "Valve is now " + (isActive ? "open" : "closed"),
-                });
               }}
             />
           </WrapContainer>
