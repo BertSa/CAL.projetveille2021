@@ -1,4 +1,0 @@
-<resources>
-    <string name="app_name">ReactNativeApp</string>
-    <string name="default_notification_channel_id">firebase</string>
-</resources>

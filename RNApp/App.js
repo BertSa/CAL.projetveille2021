@@ -21,18 +21,12 @@ const App: () => Node = () => {
       .ref(`/devices/laundry/status`)
       .on("value",
         snapshot => {
-          if (snapshot.val() === isActiveLaundry) {
-            return;
-          }
           setIsActiveLaundry(snapshot.val());
         });
     database()
       .ref(`/devices/waterleak/status`)
       .on("value",
         snapshot => {
-          if (snapshot.val() === isActiveValve) {
-            return;
-          }
           setIsActiveValve(snapshot.val());
         });
   }, []);
