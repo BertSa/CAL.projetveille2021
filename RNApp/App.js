@@ -5,12 +5,37 @@
  */
 
 import type { Node } from "react";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native";
 import SwitchButton from "@freakycoder/react-native-switch-button";
+import database from "@react-native-firebase/database";
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === "dark";
+  const [isActiveLaundry, setIsActiveLaundry] = React.useState(false);
+  const [isActiveValve, setIsActiveValve] = React.useState(false);
+
+
+  useEffect(() => {
+    database()
+      .ref(`/devices/laundry/status`)
+      .on("value",
+        snapshot => {
+          if (snapshot.val() === isActiveLaundry) {
+            return;
+          }
+          setIsActiveLaundry(snapshot.val());
+        });
+    database()
+      .ref(`/devices/waterleak/status`)
+      .on("value",
+        snapshot => {
+          if (snapshot.val() === isActiveValve) {
+            return;
+          }
+          setIsActiveValve(snapshot.val());
+        });
+  }, []);
   return (
     <SafeAreaView style={{ ...styles.container, backgroundColor: isDarkMode ? "#333" : "#EEE" }}>
       <StatusBar translucent={true} barStyle={isDarkMode ? "light-content" : "dark-content"}
@@ -27,6 +52,8 @@ const App: () => Node = () => {
           <WrapContainer>
             <SwitchButton
               text="Laundry"
+              isActive={isActiveLaundry}
+              handleChange={setIsActiveLaundry}
               inactiveImageSource={require("./assets/laundry.png")}
               activeImageSource={require("./assets/laundry.png")}
               style={styles.switchButton}
@@ -36,10 +63,17 @@ const App: () => Node = () => {
                 fontWeight: "600"
               }}
               onPress={(isActive: boolean) => {
-                console.log(isActive);
+                database()
+                  .ref(`/devices/laundry/status`)
+                  .set(isActive)
+                  .then(() => {
+                    console.log("Status updated");
+                  });
               }}
             />
             <SwitchButton
+              isActive={isActiveValve}
+              handleChange={setIsActiveValve}
               text="Valve"
               inactiveImageSource={require("./assets/valve.png")}
               activeImageSource={require("./assets/valve.png")}
@@ -52,7 +86,12 @@ const App: () => Node = () => {
               originalColor={isDarkMode ? "#555555" : "#fff"}
               sameTextColor
               onPress={(isActive: boolean) => {
-                console.log(isActive);
+                database()
+                  .ref(`/devices/waterleak/status`)
+                  .set(isActive)
+                  .then(() => {
+                    console.log("Status updated");
+                  });
               }}
             />
           </WrapContainer>
