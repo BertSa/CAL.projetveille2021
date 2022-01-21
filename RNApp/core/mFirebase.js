@@ -6,10 +6,10 @@ export class mFirebase {
   initialize() {
     PushNotification.configure({
       onRegister: function(token) {
-        console.log("TOKEN:", token);
+        console.debug("TOKEN:", token);
       },
       onNotification: function(notification) {
-        console.log("NOTIFICATION:", notification);
+        console.debug("NOTIFICATION:", notification);
       },
       permissions: {
         alert: true,
@@ -31,13 +31,12 @@ export class mFirebase {
         importance: Importance.HIGH,
         visibility: "public",
         badge: true
-
       }
     );
 
 
     messaging().onMessage(async remoteMessage => {
-      console.log("Message handled", remoteMessage);
+      console.debug("Message handled", remoteMessage);
       const { title, message, channelId } = remoteMessage.data;
       PushNotification.localNotification({
         channelId: channelId,
@@ -63,7 +62,7 @@ export class mFirebase {
 
   subscribeToTopic(topic) {
     messaging().unsubscribeFromTopic(topic).then();
-    messaging().subscribeToTopic(topic).then(() => console.log(`Subscribed to topic ${topic}!`));
+    messaging().subscribeToTopic(topic).then(() => console.log(`Subscribed to topic: ${topic}!`));
   }
 }
 

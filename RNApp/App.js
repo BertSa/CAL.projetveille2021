@@ -14,22 +14,31 @@ const App: () => Node = () => {
   const isDarkMode = useColorScheme() === "dark";
   const [isActiveLaundry, setIsActiveLaundry] = React.useState(false);
   const [isActiveValve, setIsActiveValve] = React.useState(false);
-
+  const addListenerToDeviceStatus = (device: string, setter: (boolean)=>{}) => {
+    database()
+      .ref(`/devices/${device}/status`)
+      .on("value",
+        snapshot => {
+          if (typeof snapshot.val() === "boolean") {
+            setter(snapshot.val());
+          }
+        });
+  };
+  const handleIsActive = (device: string, isActive: boolean) => {
+    database()
+      .ref(`/devices/${device}/status`)
+      .set(isActive)
+      .then(() => {
+        console.log(`Status updated for ${device}(${isActive})`);
+      });
+  };
 
   useEffect(() => {
-    database()
-      .ref(`/devices/laundry/status`)
-      .on("value",
-        snapshot => {
-          setIsActiveLaundry(snapshot.val());
-        });
-    database()
-      .ref(`/devices/waterleak/status`)
-      .on("value",
-        snapshot => {
-          setIsActiveValve(snapshot.val());
-        });
+    addListenerToDeviceStatus("laundry", setIsActiveLaundry);
+    addListenerToDeviceStatus("valve", setIsActiveValve);
   }, []);
+
+
   return (
     <SafeAreaView style={{ ...styles.container, backgroundColor: isDarkMode ? "#333" : "#EEE" }}>
       <StatusBar translucent={true} barStyle={isDarkMode ? "light-content" : "dark-content"}
@@ -47,46 +56,29 @@ const App: () => Node = () => {
             <SwitchButton
               text="Laundry"
               isActive={isActiveLaundry}
-              handleChange={setIsActiveLaundry}
               inactiveImageSource={require("./assets/laundry.png")}
               activeImageSource={require("./assets/laundry.png")}
               style={styles.switchButton}
+              textStyle={styles.textSwitchButton}
               originalColor={isDarkMode ? "#555555" : "#fff"}
               sameTextColor
-              textStyle={{
-                fontWeight: "600"
-              }}
-              onPress={(isActive: boolean) => {
-                database()
-                  .ref(`/devices/laundry/status`)
-                  .set(isActive)
-                  .then(() => {
-                    console.log("Status updated");
-                  });
-              }}
+              disabledOnClick
+              onPress={(isActive: boolean) => handleIsActive("laundry", isActive)}
+              onLongPress={() => console.log("Laundry Long Press")}
             />
             <SwitchButton
-              isActive={isActiveValve}
-              handleChange={setIsActiveValve}
               text="Valve"
+              isActive={isActiveValve}
               inactiveImageSource={require("./assets/valve.png")}
               activeImageSource={require("./assets/valve.png")}
               style={styles.switchButton}
-              textStyle={{
-                fontWeight: "600"
-              }}
+              textStyle={styles.textSwitchButton}
               mainColor="#2196f2"
               tintColor="#ee3322"
               originalColor={isDarkMode ? "#555555" : "#fff"}
               sameTextColor
-              onPress={(isActive: boolean) => {
-                database()
-                  .ref(`/devices/waterleak/status`)
-                  .set(isActive)
-                  .then(() => {
-                    console.log("Status updated");
-                  });
-              }}
+              handleChange={setIsActiveValve}
+              onPress={(isActive: boolean) => handleIsActive("waterleak", isActive)}
             />
           </WrapContainer>
         </View>
@@ -119,6 +111,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%"
+  },
+  textSwitchButton: {
+    fontWeight: "600"
   }
 });
 
