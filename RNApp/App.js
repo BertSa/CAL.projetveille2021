@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
 
 const Separator = () => {
   const isDarkMode = useColorScheme() === "dark";
+
   return <View style={{
     marginVertical: 8,
     borderBottomColor: isDarkMode ? "#EEE" : "#737373",
