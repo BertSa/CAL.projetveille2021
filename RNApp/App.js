@@ -38,7 +38,6 @@ const App: () => Node = () => {
     addListenerToDeviceStatus("valve", setIsActiveValve);
   }, []);
 
-
   return (
     <SafeAreaView style={{ ...styles.container, backgroundColor: isDarkMode ? "#333" : "#EEE" }}>
       <StatusBar translucent={true} barStyle={isDarkMode ? "light-content" : "dark-content"}
@@ -88,6 +87,7 @@ const App: () => Node = () => {
   );
 };
 export default App;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
