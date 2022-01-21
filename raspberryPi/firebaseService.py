@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-import json
 
 import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
-from firebase_admin import messaging
+from firebase_admin import credentials, db, messaging
+
+from conf import config
 
 
 def my_listener(event):
@@ -13,16 +12,23 @@ def my_listener(event):
     print(event.data)
 
 
+class FirebaseMessagingData(dict):
+    def __init__(self, channel_id, title, message):
+        super().__init__()
+        self['channelId'] = channel_id
+        self['title'] = title
+        self['message'] = message
+
+
 class FirebaseService:
     def __init__(self):
-        with open("config.json", "r") as f:
-            self.data = json.load(f)
-        cred = credentials.Certificate("GOOGLE_APPLICATION_CREDENTIALS.json")
+        cred = credentials.Certificate(config.firebase['credentials'])
         firebase_admin.initialize_app(cred, {
-            'databaseURL': self.data['firebase']['url_database'],
+            'databaseURL': config.firebase["url_database"],
         })
-        self.topic = self.data['firebase']['topic']
-        self.ref_path_1 = self.data['firebase']['ref_path_1']
+        # self.topic = config.firebase['topics']['water_leak']
+        self.topic = config.firebase['topics']['laundry']
+        self.ref_path_1 = config.firebase['url_database']
         self.ref = db.reference()
 
     def getDataFromRef(self, ref_path):
@@ -31,23 +37,14 @@ class FirebaseService:
     def startListenerValve(self, listener=my_listener):
         self.ref.child(self.ref_path_1).listen(listener)
 
-    def send_to_topic(self):
+    def send_to_topic(self, data: dict):
         message = messaging.Message(
             android=messaging.AndroidConfig(
-                notification=messaging.AndroidNotification(
-                    title='WaterLeak!!!',
-                    body='The floor is getting wet!!!',
-                    click_action='alert',
-                    visibility='public',
-                    priority='max',
-                    sticky=True,
-                    channel_id="waterleak",
-                    color="#FF0000",
-                    tag="WATERLEAK"
-                ),
-                priority='high'
+                data=data,
+                priority="high",
             ),
             topic=self.topic,
+
         )
         response = messaging.send(message)
         print('Successfully sent message:', response)
@@ -58,3 +55,12 @@ class FirebaseService:
 
     def setValve(self, data: bool):
         self.setDataToRef(self.ref_path_1, data)
+
+
+if __name__ == '__main__':
+    firebase = FirebaseService()
+    firebase.send_to_topic(FirebaseMessagingData(
+        channel_id=config.firebase['channel_ids']['laundry'],
+        # channel_id=config.firebase['channel_ids']['water_leak'],
+        title='Oops!',
+        message='Water leak detected!'))

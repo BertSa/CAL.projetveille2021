@@ -1,43 +1,44 @@
 #!/usr/bin/python3
-import json
-import time
 import threading
+import time
 
-from firebaseService import FirebaseService
-from my_rpi_rf import MyRpiRf
+from conf import config
+from firebaseService import FirebaseService, FirebaseMessagingData
+from custom_rpi_rf import CustomRpiRf
 
 
 def main():
     service = FirebaseService()
-    myrf = MyRpiRf()
+    myrf = CustomRpiRf()
     receive_device = myrf.get_rfdevice_receive()
-    with open("config.json", "r") as f:
-        data = json.load(f)
 
     def my_listener(event):
         print(event.event_type)  # can be 'put' or 'patch'
         print(event.path)
         print(event.data)
+        rf_code_water_leak = config.rf_codes['water_leak']
         if event.data:
-            myrf.send_signal(data['rf_code_send'])
+            myrf.send_signal(rf_code_water_leak['valve_on'])
         else:
-            myrf.send_signal(data['rf_code_send2'])
+            myrf.send_signal(rf_code_water_leak['valve_off'])
 
     def my_thread():
         timestamp = None
         while True:
             if receive_device.rx_code_timestamp != timestamp:
                 timestamp = receive_device.rx_code_timestamp
-                if receive_device.rx_code == data['rf_code']:
+                if receive_device.rx_code == config.rf_codes['water_leak']['valve_off']:
                     print("Signal received")
-                    service.send_to_topic()
+                    service.send_to_topic(FirebaseMessagingData(
+                        channel_id=config.firebase['channel_ids']["water_leak"],
+                        title='Oops!',
+                        message='Water leak detected!'))
                     service.setValve(False)
                     time.sleep(0.5)
-            time.sleep(0.01)
 
-    t1 = threading.Thread(target=my_thread)
-    t1.start()
-    service.startListenerValve(my_listener)
+                    t1 = threading.Thread(target=my_thread)
+                    t1.start()
+                    service.startListenerValve(my_listener)
 
 
 if __name__ == "__main__":
