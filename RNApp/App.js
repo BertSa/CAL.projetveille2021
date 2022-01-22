@@ -5,15 +5,15 @@
  */
 
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native";
 import SwitchButton from "@freakycoder/react-native-switch-button";
 import database from "@react-native-firebase/database";
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === "dark";
-  const [isActiveLaundry, setIsActiveLaundry] = React.useState(false);
-  const [isActiveValve, setIsActiveValve] = React.useState(false);
+  const [isActiveLaundry, setIsActiveLaundry] = useState(false);
+  const [isActiveValve, setIsActiveValve] = useState(false);
   const addListenerToDeviceStatus = (device: string, setter: (boolean)=>{}) => {
     database()
       .ref(`/devices/${device}/status`)
