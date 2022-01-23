@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native";
 import SwitchButton from "@freakycoder/react-native-switch-button";
 import database from "@react-native-firebase/database";
+import * as EnvironmentConstants from "./core/EnvironmentConstants";
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === "dark";
@@ -16,7 +17,7 @@ const App: () => Node = () => {
   const [isActiveValve, setIsActiveValve] = useState(false);
   const addListenerToDeviceStatus = (device: string, setter: (boolean)=>{}) => {
     database()
-      .ref(`/devices/${device}/status`)
+      .ref(`${EnvironmentConstants.DB_PATH_TO_DEVICE}/${device}/status`)
       .on("value",
         snapshot => {
           if (typeof snapshot.val() === "boolean") {
@@ -26,7 +27,7 @@ const App: () => Node = () => {
   };
   const handleIsActive = (device: string, isActive: boolean) => {
     database()
-      .ref(`/devices/${device}/status`)
+      .ref(`${EnvironmentConstants.DB_PATH_TO_DEVICE}/${device}/status`)
       .set(isActive)
       .then(() => {
         console.log(`Status updated for ${device}(${isActive})`);
@@ -55,8 +56,8 @@ const App: () => Node = () => {
             <SwitchButton
               text="Laundry"
               isActive={isActiveLaundry}
-              inactiveImageSource={require("./assets/laundry.png")}
-              activeImageSource={require("./assets/laundry.png")}
+              inactiveImageSource={require(EnvironmentConstants.IMG_LAUNDRY)}
+              activeImageSource={require(EnvironmentConstants.IMG_LAUNDRY)}
               style={styles.switchButton}
               textStyle={styles.textSwitchButton}
               originalColor={isDarkMode ? "#555555" : "#fff"}
@@ -68,8 +69,8 @@ const App: () => Node = () => {
             <SwitchButton
               text="Valve"
               isActive={isActiveValve}
-              inactiveImageSource={require("./assets/valve.png")}
-              activeImageSource={require("./assets/valve.png")}
+              inactiveImageSource={require(EnvironmentConstants.IMG_VALVE)}
+              activeImageSource={require(EnvironmentConstants.IMG_VALVE)}
               style={styles.switchButton}
               textStyle={styles.textSwitchButton}
               mainColor="#2196f2"
