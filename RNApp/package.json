@@ -13,12 +13,19 @@
   },
   "dependencies": {
     "@freakycoder/react-native-switch-button": "github:BertSa/react-native-switch-button",
-    "@react-native-firebase/app": "^14.2.2",
-    "@react-native-firebase/database": "^14.2.2",
-    "@react-native-firebase/messaging": "^14.2.2",
+    "@react-native-firebase/app": "^14.2.3",
+    "@react-native-firebase/auth": "^14.2.3",
+    "@react-native-firebase/database": "^14.2.3",
+    "@react-native-firebase/messaging": "^14.2.3",
+    "@react-native-masked-view/masked-view": "^0.2.6",
+    "@react-navigation/native": "^6.0.6",
+    "@react-navigation/stack": "^6.0.11",
     "react": "17.0.2",
     "react-native": "0.66.4",
-    "react-native-push-notification": "^8.1.1"
+    "react-native-gesture-handler": "^2.2.0",
+    "react-native-push-notification": "^8.1.1",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-screens": "^3.10.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
