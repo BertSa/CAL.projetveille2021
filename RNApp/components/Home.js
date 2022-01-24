@@ -41,7 +41,7 @@ export default function Home(props) {
       DomoApp
     </Text>
     <Text style={{ color: "#bababa", marginTop: 12 }}>
-      Fundamental app settings to configure
+      Fundamental app settings to configure {auth().currentUser.displayName}
     </Text>
     <View style={styles.fixToText}>
       <WrapContainer>
@@ -85,6 +85,28 @@ export default function Home(props) {
         });
     }
     } title="Logout" />
+    <CustomButton
+      onPress={() => {
+        auth().currentUser.delete()
+          .then(() => {
+            console.log("User deleted");
+            props.navigation.replace("Auth");
+          }).catch(
+          error => {
+            console.log(error);
+            if (error.code === "auth/requires-recent-login") {
+              auth().signOut()
+                .then(() => {
+                  console.log("Logged out");
+                  props.navigation.replace("Auth");
+                });
+            }
+          }
+        );
+      }}
+      title="DeleteAccount"
+      color="#f44336"
+    />
   </ScrollView>;
 }
 const Separator = () => {

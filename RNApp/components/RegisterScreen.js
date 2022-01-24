@@ -11,38 +11,33 @@ import {
 import auth from "@react-native-firebase/auth";
 import React, { createRef, useState } from "react";
 import CustomButton from "./CustomButton";
+import database from "@react-native-firebase/database";
 
 const RegisterScreen = (props) => {
   const isDarkMode = useColorScheme() === "dark";
 
-  const [userName, setUserName] = useState("");
+  const [userFullName, setUserFullName] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [userAge, setUserAge] = useState("");
-  const [userAddress, setUserAddress] = useState("");
+  const [userUsername, setUserUsername] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [errortext, setErrortext] = useState("");
 
   const emailInputRef = createRef();
-  const ageInputRef = createRef();
-  const addressInputRef = createRef();
+  const usernameInputRef = createRef();
   const passwordInputRef = createRef();
 
   const handleSubmitButton = () => {
     setErrortext("");
-    if (!userName) {
-      alert("Please fill Name");
-      setErrortext("Please fill Name");
+    if (!userFullName) {
+      alert("Please fill full name");
+      setErrortext("Please fill full name");
       return;
     }
     if (!userEmail) {
       alert("Please fill Email");
       return;
     }
-    if (!userAge) {
-      alert("Please fill Age");
-      return;
-    }
-    if (!userAddress) {
+    if (!userUsername) {
       alert("Please fill Address");
       return;
     }
@@ -54,7 +49,19 @@ const RegisterScreen = (props) => {
       .createUserWithEmailAndPassword(userEmail, userPassword)
       .then(() => {
         console.log("User account created & signed in!");
-        props.navigation.navigate("Home");
+        auth().currentUser.sendEmailVerification().then();
+        database().ref("users/")
+          .child(auth().currentUser.uid)
+          .set({
+            fullName: userFullName,
+            email: userEmail,
+            username: userUsername,
+          }).then();
+        auth().currentUser.updateProfile({
+          displayName: userFullName
+        }).then(() => {
+          props.navigation.navigate("Home");
+        });
       })
       .catch(error => {
         if (error.code === "auth/email-already-in-use") {
@@ -80,9 +87,9 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={{ ...styles.inputStyle, borderColor: isDarkMode ? "#FFF" : "#000" }}
-              onChangeText={(UserName) => setUserName(UserName)}
+              onChangeText={(UserName) => setUserFullName(UserName)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Name"
+              placeholder="Enter Full Name"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
               returnKeyType="next"
@@ -122,8 +129,7 @@ const RegisterScreen = (props) => {
               returnKeyType="next"
               secureTextEntry={true}
               onSubmitEditing={() =>
-                ageInputRef.current &&
-                ageInputRef.current.focus()
+                Keyboard.dismiss()
               }
               blurOnSubmit={false}
             />
@@ -131,36 +137,20 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={{ ...styles.inputStyle, borderColor: isDarkMode ? "#FFF" : "#000" }}
-              onChangeText={(UserAge) => setUserAge(UserAge)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Age"
-              placeholderTextColor="#8b9cb5"
-              keyboardType="numeric"
-              ref={ageInputRef}
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                addressInputRef.current &&
-                addressInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={{ ...styles.inputStyle, borderColor: isDarkMode ? "#FFF" : "#000" }}
-              onChangeText={(UserAddress) =>
-                setUserAddress(UserAddress)
+              onChangeText={(UserUsername) =>
+                setUserUsername(UserUsername)
               }
               underlineColorAndroid="#f000"
-              placeholder="Enter Address"
+              placeholder="Enter Username"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
-              ref={addressInputRef}
+              ref={usernameInputRef}
               returnKeyType="next"
               onSubmitEditing={Keyboard.dismiss}
               blurOnSubmit={false}
             />
           </View>
+
           {errortext !== "" ? (
             <Text style={styles.errorTextStyle}>
               {errortext}
