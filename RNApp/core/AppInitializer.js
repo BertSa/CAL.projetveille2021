@@ -13,10 +13,6 @@ const initializeApp = () => {
     console.log("Notification caused app to open from background state:", remoteMessage.data);
     sendLocalNotification(remoteMessage.data);
   });
-
-  subscribeToTopic("laundry");
-  subscribeToTopic("waterleak");
-
 };
 
 function setupNotification() {
@@ -60,9 +56,6 @@ function sendLocalNotification(data: { title: string, message: string, channelId
   });
 }
 
-function subscribeToTopic(topic: string) {
-  messaging().unsubscribeFromTopic(topic).then();
-  messaging().subscribeToTopic(topic).then(() => console.log(`Subscribed to topic: ${topic}!`));
-}
+
 
 export default initializeApp;

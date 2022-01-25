@@ -5,6 +5,7 @@ import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 import * as EnvironmentConstants from "../core/EnvironmentConstants";
 import CustomButton from "./CustomButton";
+import { subscribeToTopic, unsubscribeToTopic } from "../core/EnvironmentConstants";
 
 export default function Home(props) {
   const isDarkMode = useColorScheme() === "dark";
@@ -22,8 +23,15 @@ export default function Home(props) {
         });
   };
   useEffect(() => {
-    addListenerToDeviceStatus("laundry", setIsActiveLaundry);
-    addListenerToDeviceStatus("valve", setIsActiveValve);
+    if (auth().currentUser) {
+      subscribeToTopic(auth().currentUser.uid);
+
+      subscribeToTopic("laundry");
+      addListenerToDeviceStatus("laundry", setIsActiveLaundry);
+
+      subscribeToTopic("waterleak");
+      addListenerToDeviceStatus("valve", setIsActiveValve);
+    }
   }, []);
   const handleIsActive = (device: string, isActive: boolean) => {
     database()
@@ -80,6 +88,9 @@ export default function Home(props) {
     <CustomButton onPress={() => {
       auth().signOut()
         .then(() => {
+          unsubscribeToTopic(auth().currentUser.uid);
+          unsubscribeToTopic("laundry");
+          unsubscribeToTopic("waterleak");
           console.log("Logged out");
           props.navigation.replace("Auth");
         });
