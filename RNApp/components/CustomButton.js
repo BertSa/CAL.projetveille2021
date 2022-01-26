@@ -19,8 +19,8 @@ export default function CustomButton(props: ICustomButtonProps) {
       borderRadius: 5,
       marginLeft: 35,
       marginRight: 35,
-      marginTop: 20,
-      marginBottom: 20
+      marginTop: 5,
+      marginBottom: 5
     }}
     activeOpacity={0.5}
     onPress={props.onPress}>

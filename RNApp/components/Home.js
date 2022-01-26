@@ -1,47 +1,16 @@
 import { ScrollView, StyleSheet, Text, useColorScheme, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import SwitchButton from "@freakycoder/react-native-switch-button";
+import React, { useEffect } from "react";
 import auth from "@react-native-firebase/auth";
-import database from "@react-native-firebase/database";
-import * as EnvironmentConstants from "../core/EnvironmentConstants";
-import CustomButton from "./CustomButton";
 import { subscribeToTopic, unsubscribeToTopic } from "../core/EnvironmentConstants";
+import CustomButton from "./CustomButton";
+import DeviceButton from "./DeviceButton";
 
 export default function Home(props) {
-  const isDarkMode = useColorScheme() === "dark";
-  const [isActiveLaundry, setIsActiveLaundry] = useState(false);
-  const [isActiveValve, setIsActiveValve] = useState(false);
-
-  const addListenerToDeviceStatus = (device: string, setter: (boolean)=>{}) => {
-    database()
-      .ref(`${EnvironmentConstants.DB_PATH_TO_DEVICE}/${device}/status`)
-      .on("value",
-        snapshot => {
-          if (typeof snapshot.val() === "boolean") {
-            setter(snapshot.val());
-          }
-        });
-  };
   useEffect(() => {
     if (auth().currentUser) {
       subscribeToTopic(auth().currentUser.uid);
-
-      subscribeToTopic("laundry");
-      addListenerToDeviceStatus("laundry", setIsActiveLaundry);
-
-      subscribeToTopic("waterleak");
-      addListenerToDeviceStatus("valve", setIsActiveValve);
     }
   }, []);
-  const handleIsActive = (device: string, isActive: boolean) => {
-    database()
-      .ref(`${EnvironmentConstants.DB_PATH_TO_DEVICE}/${device}/status`)
-      .set(isActive)
-      .then(() => {
-        console.log(`Status updated for ${device}(${isActive})`);
-      });
-  };
-
 
   return <ScrollView
     contentInsetAdjustmentBehavior="automatic" style={{ backgroundColor: "#00000000" }}>
@@ -49,48 +18,19 @@ export default function Home(props) {
       DomoApp
     </Text>
     <Text style={{ color: "#bababa", marginTop: 12 }}>
-      Fundamental app settings to configure {auth().currentUser.displayName}
+      Hello {auth().currentUser.displayName}!
     </Text>
     <View style={styles.fixToText}>
       <WrapContainer>
-        <SwitchButton
-          text="Laundry"
-          isActive={isActiveLaundry}
-          inactiveImageSource={require("../assets/laundry.png")}
-          activeImageSource={require("../assets/laundry.png")}
-          style={styles.switchButton}
-          textStyle={styles.textSwitchButton}
-          mainColor="#7289DA"
-          tintColor="#7289DA"
-          originalColor={isDarkMode ? "#2C2F33" : "#fafafa"}
-          sameTextColor
-          disabledOnClick
-          onPress={(isActive: boolean) => handleIsActive("laundry", isActive)}
-          onLongPress={() => console.log("Laundry Long Press")}
-        />
-        <SwitchButton
-          text="Valve"
-          isActive={isActiveValve}
-          inactiveImageSource={require("../assets/valve.png")}
-          activeImageSource={require("../assets/valve.png")}
-          style={styles.switchButton}
-          textStyle={styles.textSwitchButton}
-          mainColor="#7289DA"
-          tintColor="#7289DA"
-          originalColor={isDarkMode ? "#2C2F33" : "#fff"}
-          sameTextColor
-          handleChange={setIsActiveValve}
-          onPress={(isActive: boolean) => handleIsActive("waterleak", isActive)}
-        />
+        <DeviceButton deviceId="laundry" deviceName="laundry" disabledOnPress />
+        <DeviceButton deviceId="waterleak" deviceName="valve" />
       </WrapContainer>
     </View>
     <Separator />
     <CustomButton onPress={() => {
+      unsubscribeToTopic(auth().currentUser.uid);
       auth().signOut()
         .then(() => {
-          unsubscribeToTopic(auth().currentUser.uid);
-          unsubscribeToTopic("laundry");
-          unsubscribeToTopic("waterleak");
           console.log("Logged out");
           props.navigation.replace("Auth");
         });

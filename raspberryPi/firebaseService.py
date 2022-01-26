@@ -27,7 +27,8 @@ class FirebaseService:
             'databaseURL': config.firebase["url_database"],
         })
         # self.topic = config.firebase['topics']['water_leak']
-        self.topic = config.firebase['topics']['laundry']
+        # self.topic = config.firebase['topics']['laundry']
+        self.topic = 'rYWztztshAUZ3dsUhGNcWfabaVi2'
         self.ref_path_1 = config.firebase['url_database']
         self.ref = db.reference()
 
