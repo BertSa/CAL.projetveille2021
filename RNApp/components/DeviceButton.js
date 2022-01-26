@@ -1,12 +1,11 @@
-import SwitchButton from "@freakycoder/react-native-switch-button";
 import React, { useEffect, useState } from "react";
 import database from "@react-native-firebase/database";
 import * as EnvironmentConstants from "../core/EnvironmentConstants";
 import { subscribeToTopic, unsubscribeToTopic } from "../core/EnvironmentConstants";
 import { StyleSheet, useColorScheme } from "react-native";
 import auth from "@react-native-firebase/auth";
-import imageLaundry from "../assets/laundry.png";
-import imageValve from "../assets/valve.png";
+import storage from "@react-native-firebase/storage";
+import SwitchButton from "@freakycoder/react-native-switch-button/lib/SwitchButton";
 
 interface IDeviceButtonProps {
   deviceId: string;
@@ -23,9 +22,11 @@ interface IDeviceProps {
 
 export default function DeviceButton(props: IDeviceButtonProps) {
   const isDarkMode = useColorScheme() === "dark";
+  const [isLoading, setIsLoading] = useState(true);
+
   const [isActive, setIsActive] = useState(false);
   const [name, setName] = useState("");
-  const [imageSrc, setImageSrc] = useState("");
+  const [imageUri, setImageUri] = useState("../assets/notification.png");
 
   useEffect(() => {
     let topic = "default";
@@ -36,19 +37,26 @@ export default function DeviceButton(props: IDeviceButtonProps) {
           let val: IDeviceProps | any = snapshot.val();
           if (val) {
             setName(val?.name);
-            setImageSrc(val?.imageSrc);
             topic = val?.topic;
             subscribeToTopic(val?.topic);
-          }
-        }).then();
-      database()
-        .ref(`${EnvironmentConstants.DB_PATH_TO_DEVICE}/${props.deviceId}/status`)
-        .on("value",
-          snapshot => {
-            if (typeof snapshot.val() === "boolean") {
-              setIsActive(snapshot.val());
+            if (val?.imageSrc) {
+              storage().ref(`/images/${val?.imageSrc}.png`).getDownloadURL().then((url) => {
+                setImageUri(url);
+              });
             }
-          });
+          }
+        })
+        .then(() => {
+          database()
+            .ref(`${EnvironmentConstants.DB_PATH_TO_DEVICE}/${props.deviceId}/status`)
+            .on("value",
+              snapshot => {
+                if (typeof snapshot.val() === "boolean") {
+                  setIsActive(snapshot.val());
+                }
+              });
+          setIsLoading(false);
+        });
 
       return () => {
         unsubscribeToTopic(topic);
@@ -68,24 +76,16 @@ export default function DeviceButton(props: IDeviceButtonProps) {
       });
   };
 
-
-  function getImage(deviceId) {
-    switch (deviceId) {
-      case "laundry":
-        return imageLaundry;
-      case "valve":
-        return imageValve;
-      default:
-        return imageLaundry;
-    }
+  if (isLoading) {
+    return <></>;
   }
 
   return (
     <SwitchButton
       text={name}
       isActive={isActive}
-      inactiveImageSource={getImage(imageSrc)}
-      activeImageSource={getImage(imageSrc)}
+      inactiveImageSource={{ uri: imageUri }}
+      activeImageSource={{ uri: imageUri }}
       style={styles.switchButton}
       textStyle={styles.textSwitchButton}
       mainColor={props.color ? props.color : "#7289DA"}
