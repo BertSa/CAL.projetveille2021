@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import database from '@react-native-firebase/database';
 import * as EnvironmentConstants from '../core/EnvironmentConstants';
 import { subscribeToTopic, unsubscribeToTopic } from '../core/EnvironmentConstants';
-import { StyleSheet, useColorScheme } from 'react-native';
+import { StyleSheet, ToastAndroid, useColorScheme } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import SwitchButton from '@freakycoder/react-native-switch-button/lib/SwitchButton';
@@ -77,6 +77,12 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
             .set(isActive)
             .then(() => {
                 console.log(`Status updated for ${ device }(${ isActive })`);
+            })
+            .catch(error => {
+                if (error.code==='database/permission-denied'){
+                    console.log('Permission denied');
+                    ToastAndroid.show('Permission denied!', ToastAndroid.SHORT);
+                }
             });
     };
 
@@ -99,6 +105,9 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
             disabledOnClick={ props.disabledOnPress }
             handleChange={ setIsActive }
             onPress={ isActive => handleIsActive(props.deviceId, isActive) }
+            onLongPress={ () => {
+                console.log('Long press');
+            } }
         />
     );
 }

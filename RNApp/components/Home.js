@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, useColorScheme, View} from 'react-native';
 import React, { useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import { subscribeToTopic, unsubscribeToTopic } from '../core/EnvironmentConstants';
@@ -23,24 +23,41 @@ export default function Home( props ) {
     }
 
     function handleDeleteAccount() {
-        auth().currentUser
-            .delete()
-            .then(() => {
-                console.log('User deleted');
-                props.navigation.replace('Auth');
-            })
-            .catch(error => {
-                    console.log(error);
-                    if (error.code === 'auth/requires-recent-login') {
-                        auth()
-                            .signOut()
+        Alert.alert(
+            'Delete Account',
+            'Are you sure you want to delete your account?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Delete',
+                    onPress: () => {
+                        auth().currentUser
+                            .delete()
                             .then(() => {
-                                console.log('Logged out');
+                                console.log('User deleted');
                                 props.navigation.replace('Auth');
-                            });
+                            })
+                            .catch(error => {
+                                    console.log(error);
+                                    if (error.code === 'auth/requires-recent-login') {
+                                        auth()
+                                            .signOut()
+                                            .then(() => {
+                                                console.log('Logged out');
+                                                props.navigation.replace('Auth');
+                                            });
+                                    }
+                                }
+                            );
                     }
                 }
-            );
+            ],
+            {cancelable: false}
+        );
+
     }
 
     return (
@@ -60,6 +77,8 @@ export default function Home( props ) {
             </View>
             <Separator/>
             <CustomButton onPress={ handleLogout } title="Logout"/>
+            <CustomButton onPress={ () => {
+            } } title="Share"/>
             <CustomButton onPress={ handleDeleteAccount } title="DeleteAccount" color="#f44336"/>
         </ScrollView> );
 }
