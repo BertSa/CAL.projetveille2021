@@ -1,9 +1,11 @@
-import { Alert, ScrollView, StyleSheet, Text, useColorScheme, View} from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import React, { useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import { subscribeToTopic, unsubscribeToTopic } from '../core/EnvironmentConstants';
 import CustomButton from './CustomButton';
 import DeviceButton from './DeviceButton';
+import { launchImageLibrary } from 'react-native-image-picker';
+import storage from '@react-native-firebase/storage';
 
 export default function Home( props ) {
     useEffect(() => {
@@ -78,7 +80,19 @@ export default function Home( props ) {
             <Separator/>
             <CustomButton onPress={ handleLogout } title="Logout"/>
             <CustomButton onPress={ () => {
-            } } title="Share"/>
+                launchImageLibrary({mediaType: 'photo', selectionLimit: 1})
+                    .then(result => result.assets[0])
+                    .then(( asset ) => {
+                        const uri = asset.uri;
+                        let ext = uri.split('.').pop();
+                        storage()
+                            .ref(`/images/users/${ auth().currentUser.uid }/avatar.${ ext }`)
+                            .putFile(uri)
+                            .then(() => {
+                                console.log('Uploaded');
+                            });
+                    });
+            } } title="Upload avatar"/>
             <CustomButton onPress={ handleDeleteAccount } title="DeleteAccount" color="#f44336"/>
         </ScrollView> );
 }
