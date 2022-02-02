@@ -1,21 +1,38 @@
-import { Alert, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { Alert, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import { subscribeToTopic, unsubscribeToTopic } from '../core/EnvironmentConstants';
 import CustomButton from './CustomButton';
 import DeviceButton from './DeviceButton';
 import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
+import menuImage from '../assets/menu.png';
+import GorgeousHeader from 'react-native-gorgeous-header/lib/GorgeousHeader';
 
 export default function Home( props ) {
+    const [ avatar, setAvatar ] = useState();
     useEffect(() => {
         if (auth().currentUser) {
             subscribeToTopic(auth().currentUser.uid);
+            storage()
+                .ref(`/images/users/${ auth().currentUser.uid }`)
+                .listAll()
+                .then(res => {
+                    if (res.items.length > 0) {
+                        res.items
+                            .find(item => item.name.includes('avatar'))
+                            .getDownloadURL()
+                            .then(url => {
+                                setAvatar(url);
+                                console.log('Avatar found!');
+                            });
+                    }
+                });
         }
     }, []);
 
     function handleLogout() {
-        unsubscribeToTopic(auth().currentUser.uid);
+        unsubscribeToTopic(auth()?.currentUser?.uid);
         auth()
             .signOut()
             .then(() => {
@@ -65,12 +82,35 @@ export default function Home( props ) {
     return (
         <ScrollView
             contentInsetAdjustmentBehavior="automatic" style={ {backgroundColor: '#00000000'} }>
-            <Text style={ {fontSize: 32, fontWeight: 'bold', color: '#757575'} }>
-                DomoApp
-            </Text>
-            <Text style={ {color: '#bababa', marginTop: 12} }>
-                Hello { auth().currentUser.displayName }!
-            </Text>
+            <GorgeousHeader
+                menuImageSource={ menuImage }
+                menuImageStyle={ {width: 25, height: 25, tintColor: '#FFFFFF'} }
+                profileImageSource={ {
+                    uri:
+                        avatar ?? 'https://images.unsplash.com/photo-1514846226882-28b324ef7f28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
+                } }
+                title={ 'Home' }
+                titleTextStyle={ {
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                    color: '#ffffff'
+                } }
+                menuImageOnPress={ () => {} }
+                profileImageOnPress={ () => {
+                    launchImageLibrary({mediaType: 'photo', selectionLimit: 1})
+                        .then(result => result.assets[0])
+                        .then(( asset ) => {
+                            const uri = asset.uri;
+                            let ext = uri.split('.').pop();
+                            storage()
+                                .ref(`/images/users/${ auth().currentUser.uid }/avatar.${ ext }`)
+                                .putFile(uri)
+                                .then(() => {
+                                    console.log('Uploaded');
+                                });
+                        });
+                } }
+            />
             <View style={ styles.fixToText }>
                 <WrapContainer>
                     <DeviceButton deviceId="laundry" disabledOnPress/>
@@ -80,18 +120,7 @@ export default function Home( props ) {
             <Separator/>
             <CustomButton onPress={ handleLogout } title="Logout"/>
             <CustomButton onPress={ () => {
-                launchImageLibrary({mediaType: 'photo', selectionLimit: 1})
-                    .then(result => result.assets[0])
-                    .then(( asset ) => {
-                        const uri = asset.uri;
-                        let ext = uri.split('.').pop();
-                        storage()
-                            .ref(`/images/users/${ auth().currentUser.uid }/avatar.${ ext }`)
-                            .putFile(uri)
-                            .then(() => {
-                                console.log('Uploaded');
-                            });
-                    });
+
             } } title="Upload avatar"/>
             <CustomButton onPress={ handleDeleteAccount } title="DeleteAccount" color="#f44336"/>
         </ScrollView> );
