@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import database from '@react-native-firebase/database';
 import * as EnvironmentConstants from '../core/EnvironmentConstants';
-import { subscribeToTopic, unsubscribeToTopic } from '../core/EnvironmentConstants';
 import { StyleSheet, ToastAndroid, useColorScheme } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import SwitchButton from '@freakycoder/react-native-switch-button/lib/SwitchButton';
+import { useNavigation } from '@react-navigation/native';
 
 interface IDeviceButtonProps {
     deviceId : string;
@@ -21,6 +21,7 @@ interface IDeviceProps {
 
 export default function DeviceButton( props : IDeviceButtonProps ) {
     const isDarkMode = useColorScheme() === 'dark';
+    const navigation = useNavigation();
     const [ isLoading, setIsLoading ] = useState(true);
 
     const [ isActive, setIsActive ] = useState(false);
@@ -46,19 +47,17 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
                     }
                     topic = device?.topic;
                 })
-                .then(() => {
-                    database()
-                        .ref(
-                            `${ EnvironmentConstants.DB_PATH_TO_DEVICE }/${ props.deviceId }/status`
-                        )
-                        .on('value', snapshot => {
-                            if (typeof snapshot.val() === 'boolean') {
-                                setIsActive(snapshot.val());
-                            }
-                        });
-                    setIsLoading(false);
+                .then();
+            database()
+                .ref(
+                    `${ EnvironmentConstants.DB_PATH_TO_DEVICE }/${ props.deviceId }/status`
+                )
+                .on('value', snapshot => {
+                    if (typeof snapshot.val() === 'boolean') {
+                        setIsActive(snapshot.val());
+                    }
                 });
-
+            setIsLoading(false);
             return () => {
                 database()
                     .ref(
@@ -77,7 +76,7 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
                 console.log(`Status updated for ${ device }(${ isActive })`);
             })
             .catch(error => {
-                if (error.code==='database/permission-denied'){
+                if (error.code === 'database/permission-denied') {
                     console.log('Permission denied');
                     ToastAndroid.show('Permission denied!', ToastAndroid.SHORT);
                 }
@@ -105,6 +104,9 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
             onPress={ isActive => handleIsActive(props.deviceId, isActive) }
             onLongPress={ () => {
                 console.log('Long press');
+                navigation.push('DeviceDetails', {
+                    deviceId: props.deviceId
+                });
             } }
         />
     );

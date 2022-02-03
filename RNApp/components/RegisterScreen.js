@@ -10,8 +10,9 @@ import {
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import React, { createRef, useState } from 'react';
-import CustomButton from './CustomButton';
+import CustomButton from './Shared/CustomButton';
 import database from '@react-native-firebase/database';
+import { subscribeToTopic } from '../core/EnvironmentConstants';
 
 export default function RegisterScreen( {navigation} ) {
     const isDarkMode = useColorScheme() === 'dark';
@@ -63,6 +64,7 @@ export default function RegisterScreen( {navigation} ) {
                         displayName: userFullName
                     })
                     .then(() => {
+                        subscribeToTopic(auth().currentUser.uid);
                         navigation.navigate('Home');
                     });
             })

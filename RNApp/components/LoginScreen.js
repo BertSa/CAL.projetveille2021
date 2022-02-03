@@ -1,16 +1,18 @@
 import {
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  useColorScheme,
-  View
+    Keyboard,
+    KeyboardAvoidingView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    useColorScheme,
+    View
 } from 'react-native';
 import React, { createRef, useState } from 'react';
 import auth from '@react-native-firebase/auth';
-import CustomButton from './CustomButton';
+import CustomButton from './Shared/CustomButton';
+import { subscribeToTopic } from '../core/EnvironmentConstants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen( {navigation} ) {
     const isDarkMode = useColorScheme() === 'dark';
@@ -30,10 +32,28 @@ export default function LoginScreen( {navigation} ) {
             alert('Please fill Password');
             return;
         }
+        const reSub = async () => {
+            let keys = [];
+            try {
+                keys = await AsyncStorage.getAllKeys();
+            } catch (e) {
+            }
+            keys.filter(key => key.includes('topic@'))
+                .forEach(key => {
+                    AsyncStorage.getItem(key)
+                        .then(value => {
+                            if (value === 'true') {
+                                subscribeToTopic(key.replace('topic@', ''));
+                            }
+                        });
+                });
+        };
         auth()
             .signInWithEmailAndPassword(userEmail, userPassword)
             .then(() => {
                 console.log('User account created & signed in!');
+                subscribeToTopic(auth().currentUser.uid);
+                reSub().then();
                 navigation.replace('Home');
             })
             .catch(error => {
