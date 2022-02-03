@@ -37,15 +37,14 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
                     if (!device) {
                         return;
                     }
-                    setName(device?.name);
-                    if (device?.imageSrc) {
+                    setName(device.name);
+                    if (device.imageSrc) {
                         storage()
                             .ref(`/images/${ device?.imageSrc }.png`)
                             .getDownloadURL()
                             .then(url => setImageUri(url));
                     }
                     topic = device?.topic;
-                    subscribeToTopic(topic);
                 })
                 .then(() => {
                     database()
@@ -61,7 +60,6 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
                 });
 
             return () => {
-                unsubscribeToTopic(topic);
                 database()
                     .ref(
                         `${ EnvironmentConstants.DB_PATH_TO_DEVICE }/${ props.deviceId }/status`

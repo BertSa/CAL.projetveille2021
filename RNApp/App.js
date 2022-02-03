@@ -19,7 +19,7 @@ const App : () => Node = () => {
     const isDarkMode = useColorScheme() === 'dark';
 
     const Stack = createStackNavigator();
-
+    const mHome = ( props ) => <Home stack={ Stack }  navigation={props.navigation}/>;
     const Auth = () => {
         return (
             <Stack.Navigator initialRouteName="LoginScreen">
@@ -79,7 +79,7 @@ const App : () => Node = () => {
                     />
                     <Stack.Screen
                         name="Home"
-                        component={ Home }
+                        component={ mHome }
                         options={ {headerShown: false} }
                     />
                 </Stack.Navigator>
