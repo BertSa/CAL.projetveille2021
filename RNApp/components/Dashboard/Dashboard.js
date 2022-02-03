@@ -1,10 +1,15 @@
 import { ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 import GorgeousHeader from 'react-native-gorgeous-header/lib/GorgeousHeader';
-import menuImage from '../assets/menu.png';
+import menuImage from '../../assets/menu.png';
 import DeviceButton from './DeviceButton';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { Separator } from '../Shared/Separator';
+import defaultAvatar from '../../assets/images/default-avatar.png';
 
-export function Dashboard( props ) {
+export function Dashboard( {avatar} ) {
+    const isDarkMode = useColorScheme() === 'dark';
+    const navigation = useNavigation();
     return (
         <>
             <ScrollView
@@ -12,19 +17,22 @@ export function Dashboard( props ) {
                 <GorgeousHeader
                     menuImageSource={ menuImage }
                     menuImageStyle={ {width: 25, height: 25, tintColor: '#FFFFFF'} }
-                    profileImageSource={ {
-                        uri:
-                            props.avatar ?? 'https://images.unsplash.com/photo-1514846226882-28b324ef7f28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
-                    } }
-                    title={ 'Home' }
+                    profileImageSource={ avatar ? {uri: avatar} : defaultAvatar }
+                    profileImageStyle={ !avatar ? {
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        tintColor: isDarkMode ? '#FFF' : '#000'
+                    } : null }
+                    title={ 'Dashboard' }
                     titleTextStyle={ {
                         fontSize: 20,
                         fontWeight: 'bold',
-                        color: '#ffffff'
+                        color: isDarkMode ? '#FFFFFF' : '#000000'
                     } }
                     menuImageOnPress={ () => {} }
                     profileImageOnPress={ () => {
-                        props.navigation.navigate('Settings');
+                        navigation.navigate('Profile');
                     } }
                 />
                 <View style={ styles.fixToText }>
@@ -37,16 +45,6 @@ export function Dashboard( props ) {
             </ScrollView>
         </>
     );
-}
-
-function Separator() {
-    const isDarkMode = useColorScheme() === 'dark';
-
-    return <View style={ {
-        marginVertical: 8,
-        borderBottomColor: isDarkMode ? '#EEE' : '#737373',
-        borderBottomWidth: StyleSheet.hairlineWidth
-    } }/>;
 }
 
 function WrapContainer( {children} ) {

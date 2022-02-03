@@ -8,7 +8,7 @@ import type { Node } from 'react';
 import React from 'react';
 import { SafeAreaView, StatusBar, StyleSheet, useColorScheme } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from './components/Home';
+import ProtectedStacks from './components/ProtectedStacks';
 import LoginScreen from './components/LoginScreen';
 import RegisterScreen from './components/RegisterScreen';
 import { NavigationContainer } from '@react-navigation/native';
@@ -19,7 +19,7 @@ const App : () => Node = () => {
     const isDarkMode = useColorScheme() === 'dark';
 
     const Stack = createStackNavigator();
-    const mHome = ( props ) => <Home stack={ Stack }  navigation={props.navigation}/>;
+    const mProtectedStacks = ( props ) => <ProtectedStacks stack={ Stack } navigation={props.navigation}/>;
     const Auth = () => {
         return (
             <Stack.Navigator initialRouteName="LoginScreen">
@@ -78,8 +78,8 @@ const App : () => Node = () => {
                         options={ {headerShown: false} }
                     />
                     <Stack.Screen
-                        name="Home"
-                        component={ mHome }
+                        name="ProtectedStacks"
+                        component={ mProtectedStacks }
                         options={ {headerShown: false} }
                     />
                 </Stack.Navigator>

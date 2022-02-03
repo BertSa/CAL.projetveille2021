@@ -65,7 +65,7 @@ export default function RegisterScreen( {navigation} ) {
                     })
                     .then(() => {
                         subscribeToTopic(auth().currentUser.uid);
-                        navigation.navigate('Home');
+                        navigation.navigate('ProtectedStacks');
                     });
             })
             .catch(error => {

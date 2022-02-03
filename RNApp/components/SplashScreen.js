@@ -10,7 +10,7 @@ export default function SplashScreen( {navigation} ) {
     useEffect(() => {
         setTimeout(() => {
             setAnimating(false);
-            navigation.replace(auth().currentUser === null ? 'Auth' : 'Home');
+            navigation.replace(auth().currentUser === null ? 'Auth' : 'ProtectedStacks');
         }, 3000);
     }, []);
 

@@ -1,15 +1,16 @@
 import { unsubscribeToTopic } from '../core/EnvironmentConstants';
 import auth from '@react-native-firebase/auth';
-import { Alert, Text, ToastAndroid } from 'react-native';
+import { Alert, ToastAndroid } from 'react-native';
 import CustomButton from './Shared/CustomButton';
 import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Separator } from './Shared/Separator';
 
 export function ProfileScreen( props ) {
 
-    async function unsubscribeFromAllTopics(uid) {
+    async function unsubscribeFromAllTopics( uid ) {
         unsubscribeToTopic(uid);
         let keys = [];
         try {
@@ -20,7 +21,7 @@ export function ProfileScreen( props ) {
             .forEach(key => {
                 AsyncStorage.getItem(key)
                     .then(value => {
-                        if (value==='true') {
+                        if (value === 'true') {
                             unsubscribeToTopic(key.replace('topic@', ''));
                         }
                     });
@@ -78,23 +79,25 @@ export function ProfileScreen( props ) {
 
     }
 
+    function handleChangeProfilePicture() {
+        launchImageLibrary({mediaType: 'photo', selectionLimit: 1})
+            .then(result => result.assets[0])
+            .then(( asset ) => {
+                const uri = asset.uri;
+                let ext = uri.split('.').pop();
+                storage()
+                    .ref(`/images/users/${ auth().currentUser.uid }/avatar.${ ext }`)
+                    .putFile(uri)
+                    .then(() => {
+                        console.log('Uploaded');
+                    });
+            });
+    }
+
     return <>
-        <Text>Settings</Text>
+        <CustomButton onPress={ handleChangeProfilePicture } title="Upload avatar"/>
+        <Separator/>
         <CustomButton onPress={ handleLogout } title="Logout"/>
-        <CustomButton onPress={ () => {
-            launchImageLibrary({mediaType: 'photo', selectionLimit: 1})
-                .then(result => result.assets[0])
-                .then(( asset ) => {
-                    const uri = asset.uri;
-                    let ext = uri.split('.').pop();
-                    storage()
-                        .ref(`/images/users/${ auth().currentUser.uid }/avatar.${ ext }`)
-                        .putFile(uri)
-                        .then(() => {
-                            console.log('Uploaded');
-                        });
-                });
-        } } title="Upload avatar"/>
         <CustomButton onPress={ handleDeleteAccount } title="DeleteAccount" color="#f44336"/>
     </>;
 }

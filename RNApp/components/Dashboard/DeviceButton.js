@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import database from '@react-native-firebase/database';
-import * as EnvironmentConstants from '../core/EnvironmentConstants';
+import * as EnvironmentConstants from '../../core/EnvironmentConstants';
 import { StyleSheet, ToastAndroid, useColorScheme } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import SwitchButton from '@freakycoder/react-native-switch-button/lib/SwitchButton';
 import { useNavigation } from '@react-navigation/native';
+import defaultDeviceIcon from '../../assets/images/default-device-icon.png';
 
 interface IDeviceButtonProps {
     deviceId : string;
@@ -26,7 +27,7 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
 
     const [ isActive, setIsActive ] = useState(false);
     const [ name, setName ] = useState('');
-    const [ imageUri, setImageUri ] = useState('../assets/notification.png');
+    const [ imageUri, setImageUri ] = useState('');
 
     useEffect(() => {
         let topic = 'default';
@@ -34,7 +35,9 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
             storage()
                 .ref(`/images/${ props.deviceId }.png`)
                 .getDownloadURL()
-                .then(url => setImageUri(url));
+                .then(url =>{
+                    setImageUri(url);
+                } );
             database()
                 .ref(`${ EnvironmentConstants.DB_PATH_TO_DEVICE }/${ props.deviceId }`)
                 .once('value', snapshot => {
@@ -89,8 +92,8 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
         <SwitchButton
             text={ name }
             isActive={ isActive }
-            inactiveImageSource={ {uri: imageUri} }
-            activeImageSource={ {uri: imageUri} }
+            inactiveImageSource={ imageUri.length > 0 ? {uri: imageUri} : defaultDeviceIcon }
+            activeImageSource={ imageUri.length > 0 ? {uri: imageUri} : defaultDeviceIcon }
             style={ styles.switchButton }
             textStyle={ styles.textSwitchButton }
             mainColor={ props.color ? props.color : '#7289DA' }
@@ -102,7 +105,7 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
             onPress={ isActive => handleIsActive(props.deviceId, isActive) }
             onLongPress={ () => {
                 console.log('Long press');
-                navigation.push('DeviceDetails', {
+                navigation.navigate('DeviceDetails', {
                     deviceId: props.deviceId
                 });
             } }

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
-import { Dashboard } from './Dashboard';
-import { DeviceDetails } from './DeviceDetails';
+import { Dashboard } from './Dashboard/Dashboard';
+import { DeviceDetailsScreen } from './DeviceDetailsScreen';
 import { ProfileScreen } from './ProfileScreen';
 
-export default function Home( props ) {
+export default function ProtectedStacks( props ) {
     const {stack} = props;
     const [ avatar, setAvatar ] = useState();
     useEffect(() => {
@@ -27,7 +27,7 @@ export default function Home( props ) {
         }
     }, []);
 
-    const mDash = () => <Dashboard avatar={ avatar } navigation={ props.navigation }/>;
+    const mDash = () => <Dashboard avatar={ avatar } />;
 
     return (
         <stack.Navigator initialRouteName="Dashboard">
@@ -39,12 +39,12 @@ export default function Home( props ) {
             <stack.Group>
                 <stack.Screen
                     name="DeviceDetails"
-                    component={ DeviceDetails }
+                    component={ DeviceDetailsScreen }
                     options={ {headerBackTitleVisible: false} }
                 />
             </stack.Group>
             <stack.Screen
-                name="Settings"
+                name="Profile"
                 component={ ProfileScreen }
                 options={ {headerBackTitleVisible: false} }
             />

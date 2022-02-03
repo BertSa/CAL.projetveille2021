@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { subscribeToTopic, unsubscribeToTopic } from '../core/EnvironmentConstants';
 import { Switch, Text } from 'react-native';
 
-export function DeviceDetails( {route} ) {
+export function DeviceDetailsScreen( {route} ) {
     const [ device, setDevice ] = useState(null);
     const [ topicSubscribed, setTopicSubscribed ] = useState(false);
     const {deviceId} = route.params;

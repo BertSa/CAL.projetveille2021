@@ -54,7 +54,7 @@ export default function LoginScreen( {navigation} ) {
                 console.log('User account created & signed in!');
                 subscribeToTopic(auth().currentUser.uid);
                 reSub().then();
-                navigation.replace('Home');
+                navigation.replace('ProtectedStacks');
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
