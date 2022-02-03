@@ -31,6 +31,10 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
     useEffect(() => {
         let topic = 'default';
         if (auth().currentUser) {
+            storage()
+                .ref(`/images/${ props.deviceId }.png`)
+                .getDownloadURL()
+                .then(url => setImageUri(url));
             database()
                 .ref(`${ EnvironmentConstants.DB_PATH_TO_DEVICE }/${ props.deviceId }`)
                 .once('value', snapshot => {
@@ -39,12 +43,6 @@ export default function DeviceButton( props : IDeviceButtonProps ) {
                         return;
                     }
                     setName(device.name);
-                    if (device.imageSrc) {
-                        storage()
-                            .ref(`/images/${ device?.imageSrc }.png`)
-                            .getDownloadURL()
-                            .then(url => setImageUri(url));
-                    }
                     topic = device?.topic;
                 })
                 .then();

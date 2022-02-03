@@ -1,10 +1,11 @@
 import messaging from '@react-native-firebase/messaging';
 import PushNotification, { Importance } from 'react-native-push-notification';
+import database from '@react-native-firebase/database';
 
 
 const initializeApp = () => {
     setupNotification();
-
+    database().setPersistenceEnabled(true);
     messaging().onMessage(async remoteMessage => {
         console.debug('Message handled', remoteMessage);
         sendLocalNotification(remoteMessage.data);

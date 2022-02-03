@@ -30,7 +30,7 @@ export function Dashboard( props ) {
                 <View style={ styles.fixToText }>
                     <WrapContainer>
                         <DeviceButton deviceId="laundry" disabledOnPress/>
-                        <DeviceButton deviceId="waterleak"/>
+                        <DeviceButton deviceId="valve"/>
                     </WrapContainer>
                 </View>
                 <Separator/>
