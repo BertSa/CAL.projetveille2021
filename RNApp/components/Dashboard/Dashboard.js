@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 import GorgeousHeader from 'react-native-gorgeous-header/lib/GorgeousHeader';
-import menuImage from '../../assets/menu.png';
+import menuImage from '../../assets/images/menu.png';
 import DeviceButton from './DeviceButton';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
